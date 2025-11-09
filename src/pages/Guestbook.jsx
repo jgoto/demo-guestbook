@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import supabase from '../supabaseClient';
+import Navigation from '../components/Navigation';
 
 export default function Guestbook(){
     const [messages, setMessages] = useState([]);
@@ -28,16 +29,17 @@ export default function Guestbook(){
 
   return (
     <div>
-        <h1>Demo Guestbook</h1>
-        <form onSubmit={handleSubmit}>
-            <input type = "text" value={newMessage} onChange={(e)=>setNewMessage(e.target.value)} placeholder="Write a message..."/>
-            <button type="submit">Send</button>
-        </form>
-        <ul>
-            {messages.map((msg)=>(
-            <li key={msg.id}>{msg.content}</li>))}
-        </ul>
-        </div>
+      <Navigation />
+      <h1>Demo Guestbook</h1>
+      <form onSubmit={handleSubmit}>
+          <input type = "text" value={newMessage} onChange={(e)=>setNewMessage(e.target.value)} placeholder="Write a message..."/>
+          <button type="submit">Send</button>
+      </form>
+      <ul>
+          {messages.map((msg)=>(
+          <li key={msg.id}>{msg.content}</li>))}
+      </ul>
+      </div>
   )
 
 }
