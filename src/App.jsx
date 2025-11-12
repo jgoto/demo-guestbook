@@ -3,11 +3,13 @@ import Guestbook from './pages/Guestbook'
 import Login from './pages/Login'
 import Contact from './pages/Contact'
 import Wordcloud from './pages/Wordcloud'
+import {AuthProvider} from './hooks/AuthContext'
 import { Route, BrowserRouter, Routes } from 'react-router-dom'
 
 function App() {
   
   return (
+    <AuthProvider>
     <BrowserRouter>
     <main>
       <Routes>
@@ -18,6 +20,7 @@ function App() {
       </Routes>
     </main>        
     </BrowserRouter>
+    </AuthProvider>
   )
 }
 
