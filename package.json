@@ -4,13 +4,15 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
+    "dev": "concurrently \"vite\" \"node service-api/server.js\"",
     "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.49.1",
+    "concurrently": "^9.2.1",
+    "cors": "^2.8.5",
     "dotenv": "^16.4.7",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
