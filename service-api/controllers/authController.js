@@ -1,12 +1,12 @@
-const supabase = require('../util/supabaseClient');
-const jwt = require('jsonwebtoken');
+const {login} = require('../services/authServices');
 
 async function routeLogin(req, res){
     try {
-        const {username, password} = req.body;
-        console.log(username + ": " + password);    
+        const {email, password} = req.body;
+        const token = await login(email, password);
+        res.json({token})
     } catch (error) {
-        console.error("Something went wrong");
+        console.error("Something went wrong" + error);
     }
     
 }
