@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import supabase from '../supabaseClient';
+import reactSupabase from '../supabaseClient';
 import Navigation from '../components/Navigation';
 
 export default function Guestbook(){
@@ -8,7 +8,7 @@ export default function Guestbook(){
 
   useEffect(()=>{
     const fetchMessage = async ()=> {
-      const {data, error} = await supabase.from("messages").select("*").order("created_at",{ascending: false});
+      const {data, error} = await reactSupabase.from("messages").select("*").order("created_at",{ascending: false});
       if(error)
         console.error(error);
       else setMessages(data)
@@ -20,7 +20,7 @@ export default function Guestbook(){
     e.preventDefault();
     if(!newMessage.trim()) return;
 
-    const {data, error} = await supabase.from("messages").insert([{content: newMessage}]);
+    const {data, error} = await reactSupabase.from("messages").insert([{content: newMessage}]);
     if(error)
       console.error(error);
     else setMessages([data[0], ...messages]);
