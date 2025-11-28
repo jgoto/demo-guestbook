@@ -4,14 +4,18 @@ import Navigation from '../components/Navigation';
 
 export default function Guestbook(){
     const [messages, setMessages] = useState([]);
-  const [newMessage, setNewMessage] = useState("");
+    const [newMessage, setNewMessage] = useState("");
 
   useEffect(()=>{
     const fetchMessage = async ()=> {
-      const {data, error} = await reactSupabase.from("messages").select("*").order("created_at",{ascending: false});
-      if(error)
-        console.error(error);
-      else setMessages(data)
+      const response = await fetch('http://localhost:5002/api/posts/feed',{
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        }        
+      });
+      const feed = await response.json();
+      setMessages(feed || []);
     };
     fetchMessage();
   },[]);
