@@ -1,4 +1,4 @@
-const {getFeed} = require('../services/postServices');
+const {getFeed, postMessage} = require('../services/postServices');
 
 async function routeGetFeed(req, res){
     try {
@@ -10,4 +10,14 @@ async function routeGetFeed(req, res){
     }
 }
 
-module.exports = {routeGetFeed};
+async function routeNewPost(req, res){
+    const message = req.body.content;
+    try {
+        const reply = await postMessage(message);
+        res.status(201).json(reply);
+    } catch (error) {
+        console.error(error);
+    }
+}
+
+module.exports = {routeGetFeed, routeNewPost};

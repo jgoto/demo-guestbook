@@ -5,6 +5,7 @@ import Navigation from '../components/Navigation';
 export default function Guestbook(){
     const [messages, setMessages] = useState([]);
     const [newMessage, setNewMessage] = useState("");
+    const [flagRefresh, setFlagRefresh] = useState(true);
 
   useEffect(()=>{
     const fetchMessage = async ()=> {
@@ -17,18 +18,30 @@ export default function Guestbook(){
       const feed = await response.json();
       setMessages(feed || []);
     };
-    fetchMessage();
-  },[]);
+    if(flagRefresh){
+      fetchMessage();
+      setFlagRefresh(false);
+    }
+  },[flagRefresh]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     if(!newMessage.trim()) return;
 
-    const {data, error} = await reactSupabase.from("messages").insert([{content: newMessage}]);
-    if(error)
-      console.error(error);
-    else setMessages([data[0], ...messages]);
-    setNewMessage("");
+    console.log(newMessage);
+
+    const response = await fetch('http://localhost:5002/api/posts/message', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        content: newMessage
+      })
+    });
+    if(response.status===201)
+      setFlagRefresh(true);
   }
 
   return (
