@@ -7,6 +7,7 @@ const authRoutes = require('./routes/authRoutes');
 const app = express();
 app.use(cors());
 app.use(express.json());
+
 const postRoutes = require('./routes/postRoutes')
 
 const PORT = process.env.PORT || 5000;
@@ -16,6 +17,17 @@ app.use('/api/posts', postRoutes);
 
 app.get('/ping', (req, res) => {
     return res.json({message: "Pong"});
+});
+
+app.get('/python-ping', async (req, res) => {
+    try {
+        const response = await fetch('http://localhost:3002/ping');
+        const data = await response.json();
+        res.json({python: data})        
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({error: 'cannot reach python service'});
+    }
 });
 
 app.listen(PORT, ()=>{

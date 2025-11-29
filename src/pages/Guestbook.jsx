@@ -5,11 +5,11 @@ import Navigation from '../components/Navigation';
 export default function Guestbook(){
     const [messages, setMessages] = useState([]);
     const [newMessage, setNewMessage] = useState("");
-    const [flagRefresh, setFlagRefresh] = useState(true);
+    const [flagRefresh, setFlagRefresh] = useState(true); // change this to use counter n += 1 instead of boolean
 
   useEffect(()=>{
     const fetchMessage = async ()=> {
-      const response = await fetch('http://localhost:5002/api/posts/feed',{
+        const response = await fetch('http://localhost:5002/api/posts/feed',{
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
