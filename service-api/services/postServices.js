@@ -9,9 +9,9 @@ async function getFeed(){
     }
 }
 
-async function postMessage(message){
-    try {
-        const reply = await supabase.from('messages').insert({content: message});
+async function postMessage(post){
+    try {        
+        const reply = await supabase.from('messages').insert(post);
         return reply;
     } catch (error) {
         console.error('Error adding post', error);

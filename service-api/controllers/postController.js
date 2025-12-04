@@ -11,9 +11,12 @@ async function routeGetFeed(req, res){
 }
 
 async function routeNewPost(req, res){
-    const message = req.body.content;
+    const post = {
+        content: req.body.content,
+        uuid: req.body.uuid
+    }
     try {
-        const reply = await postMessage(message);
+        const reply = await postMessage(post);
         res.status(201).json(reply);
     } catch (error) {
         console.error(error);

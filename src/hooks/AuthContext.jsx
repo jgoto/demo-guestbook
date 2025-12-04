@@ -17,7 +17,9 @@ export function AuthProvider({children}){
             if(token){
                 setLoggedIn(true);
                 const payload = JSON.parse(atob(token.split('.')[1]));
-                setUser({username: payload.username});
+                setUser({id: payload.sub,
+                    'token': token
+                });
         }    
         } catch (error) {
             console.error("Something went wrong on useEffect", error);   
@@ -44,7 +46,8 @@ export function AuthProvider({children}){
         localStorage.setItem('token', token);
         setLoggedIn(true);
         const payload = JSON.parse(atob(token.split('.')[1]));
-        setUser({username: payload.username});
+        console.log(payload);
+        setUser({'id': payload.sub});
         setLoginMsg("");
     }
     

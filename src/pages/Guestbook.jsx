@@ -1,8 +1,10 @@
 import { useEffect, useState } from 'react';
 import reactSupabase from '../supabaseClient';
 import Navigation from '../components/Navigation';
+import { useAuth } from '../hooks/AuthContext';
 
 export default function Guestbook(){
+    const {user} = useAuth();
     const [messages, setMessages] = useState([]);
     const [newMessage, setNewMessage] = useState("");
     const [flagRefresh, setFlagRefresh] = useState(true); // change this to use counter n += 1 instead of boolean
@@ -37,7 +39,8 @@ export default function Guestbook(){
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        content: newMessage
+        'content': newMessage,
+        'uuid': user.id
       })
     });
     if(response.status===201)

@@ -16,7 +16,10 @@ async function login(email, password){
             {expiresIn: '1h'}
         )
         if(error) throw error;
-        return token;
+        return {
+            'id': data.user.id,
+            'token': token
+        };
     } catch (error) {
         console.error(error);
     }
