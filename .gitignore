@@ -34,3 +34,6 @@ _pycache_/
 *.sln
 *.sw?
 .env
+
+# Project Ignored
+coverage/

@@ -15,7 +15,6 @@ async function login(email, password){
             process.env.JWT_SECRET,
             {expiresIn: '1h'}
         )
-        if(error) throw error;
         return {
             'id': data.user.id,
             'token': token
