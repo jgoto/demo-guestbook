@@ -1,5 +1,9 @@
 const supabase = require('../util/supabaseClient');
 
+/**
+ * Fetches the message feed ordered by creation time (newest first)
+ * @returns {Promise<Array|undefined>}
+ */
 async function getFeed(){
     try {
         const feed = await supabase.from('messages').select('*').order('created_at', {ascending: false});
@@ -9,6 +13,16 @@ async function getFeed(){
     }
 }
 
+/**
+ * Inserts a new message into the messages table in Supabase
+ * 
+ * @param {Object} post - Message payload to insert
+ * @returns {Promise<Object|undefined>}
+ * 
+ * @description
+ * Returns the Supabase insert response on success.
+ * Logs an error and returns undefined on failure.
+ */
 async function postMessage(post){
     try {        
         const reply = await supabase.from('messages').insert(post);

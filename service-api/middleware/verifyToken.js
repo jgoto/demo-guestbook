@@ -1,6 +1,15 @@
 const supabase = require('../util/supabaseClient');
 const jwt = require('jsonwebtoken');
 
+/**
+ * Middleware for Express that verifies a jsonwebtoken via Supabase
+ * @param {Object} req - Express request object
+ * @param {Object} res - Express response object
+ * @param {Functon} next - Express next middleware
+ * @returns {Promise<void>}
+ * 
+ * @throws Does not throw; responds with HTTP errors instead
+ */
 async function verifyToken(req, res, next){
     const authHeaders = req.headers['authorization'];
     const token = authHeaders && authHeaders.split(' ')[1];
