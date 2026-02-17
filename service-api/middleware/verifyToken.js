@@ -16,6 +16,8 @@ async function verifyToken(req, res, next){
     if(error || !data?.user){
         return res.status(403).json({message: "Invalid token"});
     }
-    req.user = user;
+    req.user = data.user;
     next();
 }
+
+module.exports = { verifyToken };
