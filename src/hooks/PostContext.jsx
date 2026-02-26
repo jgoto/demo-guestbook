@@ -1,0 +1,74 @@
+import { useContext, createContext, useState, useEffect } from "react";
+
+const PostContext = createContext();
+
+export function PostProvider({children}){
+    const [feed, setFeed] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+
+    const fetchFeed = async ()=>{
+        try {
+            console.log("Fetching Feed: ");
+            const response = await fetch('http://localhost:5000/api/posts/feed',{
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+            console.log(response);
+            const newFeed = await response.json();
+            setFeed(newFeed || []);     
+        } catch (error) {
+            console.error("Something went wrong", error)
+            setError(error);
+        } finally {
+            setLoading(false);
+        }        
+    }
+
+    const submitNewPost = async (newComment, userId) => {
+        console.log("submitting post: " + newComment + " " + userId);
+        try {
+            if(!newComment.trim()) 
+            {
+                console.log("ending early");
+                return;
+            }
+                
+            console.log("inserting post to server");
+            const response = await fetch('http://localhost:5000/api/posts/message', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    'content': newComment,
+                    'uuid': userId
+                })
+            });
+            if(response.status===201){
+                fetchFeed();
+                console.log("Feed loaded");
+            }
+                } catch (error) {
+            setError(error);
+        }
+    }
+
+    useEffect(() =>{
+        fetchFeed();
+    }, [])
+
+    const value = {feed, loading, error, submitNewPost}
+
+    return (
+        <PostContext.Provider value = {value}>
+            {children}
+        </PostContext.Provider>
+    )
+}
+
+export function usePosts(){
+    return useContext(PostContext);
+}
