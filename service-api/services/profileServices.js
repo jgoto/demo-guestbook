@@ -1,5 +1,10 @@
 const {supabase} = require('../util/supabaseClient');
 
+/**
+ * Retrieves user's profile data from DB
+ * @param {string} uuid - user_id
+ * @returns - {Promise<void>}
+ */
 async function getProfile(uuid){
     try {
         const { data } = await supabase.from('profiles')
