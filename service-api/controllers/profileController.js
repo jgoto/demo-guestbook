@@ -6,6 +6,7 @@ const {getProfile} = require('../services/profileServices');
  * @param {import('express'.Response)} res - Express Response
  * @returns {Promise<void>}
  * 
+ * @throws will return 500 if database call fails
  * @description
  * return: 
  *   200 status on success
@@ -13,8 +14,9 @@ const {getProfile} = require('../services/profileServices');
  *   500 status on Error
  */
 async function routeGetProfile(req, res){
+    const {userId} = req.params;
     try {
-        const profile = await getProfile(req.body.user_id);
+        const profile = await getProfile(userId);
         if (!profile)
         {
             return res.status(404).json({error: 'Profile not found'});

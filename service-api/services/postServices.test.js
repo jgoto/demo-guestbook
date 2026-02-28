@@ -1,47 +1,52 @@
+const mockOrder = jest.fn();
+const mockSelect = jest.fn();
+const mockInsert = jest.fn();
+const mockFrom = jest.fn();
+
 jest.mock('../util/supabaseClient', () => ({
-    from: jest.fn(() => ({
-        select: jest.fn(() => ({
-            order: jest.fn()
-        })),
-        insert: jest.fn()
-    }))  
+    supabase: {from: mockFrom},
 }));
 
-const supabase = require('../util/supabaseClient');
 const { getFeed, postMessage } = require('./postServices');
 
-test('getFeed returns feed data', async () => {
-    const mockData = [{ id: 1, text: 'Hello'}, {id: 2, text: 'World'}];
-    
-    const orderMock = jest.fn().mockResolvedValue({ data: mockData});
-    const selectMock = jest.fn(() => ({order: orderMock}));
-    supabase.from.mockReturnValue({select: selectMock});
+describe('getFeed', (()=>{
+    beforeEach(() => {
+        jest.clearAllMocks();
+    })
+    test('getFeed returns feed data', async () => {
+        const mockData = [{ id: 1, text: 'Hello'}, {id: 2, text: 'World'}];
+        mockOrder.mockResolvedValue({ data: mockData});
+        mockSelect.mockReturnValue({order: mockOrder});
+        mockFrom.mockReturnValue({select: mockSelect});
 
-    const result = await getFeed();
+        const result = await getFeed();
 
-    expect(result).toEqual(mockData);
-    expect(supabase.from).toHaveBeenCalledWith('messages');
-    expect(selectMock).toHaveBeenCalledWith('*');
-    expect(orderMock).toHaveBeenCalledWith('created_at', {ascending: false});
-});
+        expect(result).toEqual(mockData);
+        expect(mockFrom).toHaveBeenCalledWith('messages');
+        expect(mockSelect).toHaveBeenCalledWith('*');
+        expect(mockOrder).toHaveBeenCalledWith('created_at', {ascending: false});
+    });
+}))
 
 test('postMessage returns inserted data', async () => {
     const post = {text: 'new post'};
     const mockReply = { data: [{ id: 1, ...post }]};
 
-    supabase.from.mockReturnValue({ insert: jest.fn().mockResolvedValue(mockReply)});
+    mockInsert.mockResolvedValue(mockReply);
+    mockFrom.mockReturnValue({insert: mockInsert})
 
     const result = await postMessage(post);
     expect(result).toEqual(mockReply);
-    expect(supabase.from).toHaveBeenCalledWith('messages');
+    expect(mockFrom).toHaveBeenCalledWith('messages');
+    expect(mockInsert).toHaveBeenCalledWith(post);
 });
 
 test('getFeed records error and returns undefined when Supabase fails', async () => {
     const consoleSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
 
-    const orderMock = jest.fn().mockRejectedValue(new Error('Something went wrong'));
-    const selectMock = jest.fn(() => ({ order: orderMock }));
-    supabase.from.mockReturnValue({ select: selectMock });
+    mockOrder.mockRejectedValue(new Error('Something went wrong'));
+    mockSelect.mockReturnValue(mockOrder);
+    mockFrom.mockReturnValue(mockSelect);
 
     const result = await getFeed();
 
@@ -55,8 +60,9 @@ test('postMessage records error and returns undefined when Supabase fails', asyn
     const post = { text: 'Failing post' };
     const consoleSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
 
-    supabase.from.mockReturnValue({ insert: jest.fn().mockRejectedValue(new Error('Something went wrong'))});
-
+    mockInsert.mockRejectedValue(new Error('Something went wrong'));
+    mockFrom.mockReturnValue(mockInsert);
+    
     const result = await postMessage(post);
 
     expect(result).toBeUndefined();

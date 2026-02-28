@@ -4,8 +4,8 @@ dotenv.config();
 const express = require('express');
 const cors = require('cors');
 const authRoutes = require('./routes/authRoutes');
-const profileRoutes = require('./routes/profileRoutes');
 const postRoutes = require('./routes/postRoutes');
+const profileRoutes = require('./routes/profileRoutes');
 const app = express();
 
 const PORT = process.env.PORT || 5000;

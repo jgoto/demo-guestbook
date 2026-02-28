@@ -9,14 +9,12 @@ export function PostProvider({children}){
 
     const fetchFeed = async ()=>{
         try {
-            console.log("Fetching Feed: ");
             const response = await fetch('http://localhost:5000/api/posts/feed',{
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json'
                 }
             });
-            console.log(response);
             const newFeed = await response.json();
             setFeed(newFeed || []);     
         } catch (error) {
@@ -28,15 +26,13 @@ export function PostProvider({children}){
     }
 
     const submitNewPost = async (newComment, userId) => {
-        console.log("submitting post: " + newComment + " " + userId);
         try {
             if(!newComment.trim()) 
             {
                 console.log("ending early");
                 return;
             }
-                
-            console.log("inserting post to server");
+
             const response = await fetch('http://localhost:5000/api/posts/message', {
                 method: 'POST',
                 headers: {

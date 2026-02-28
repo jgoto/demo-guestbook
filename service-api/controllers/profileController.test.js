@@ -7,7 +7,7 @@ const {getProfile} = require('../services/profileServices');
 
 describe('profileController', () => {
     const req = { 
-        body: {user_id: 'abc'} 
+        params: {userId: 'abc'} 
     };
     const res = {
         status: jest.fn().mockReturnThis(), 
@@ -38,7 +38,7 @@ describe('profileController', () => {
     })
     test('returns 404 status when the request is successful but has a null value', async ()=>{
         const missingProfile = {
-            body: {user_id: '000'}
+            params: {user_id: '000'}
         };
         getProfile.mockResolvedValue(null);
         await routeGetProfile(missingProfile, res);

@@ -10,7 +10,7 @@ async function getProfile(uuid){
         const { data } = await supabase.from('profiles')
             .select('*')
             .eq('user_id', uuid)
-            .maybeSingle();       
+            .maybeSingle();      
         return data;
     } catch (error) {
         console.error(error);

@@ -46,7 +46,6 @@ export function AuthProvider({children}){
         localStorage.setItem('token', token);
         setLoggedIn(true);
         const payload = JSON.parse(atob(token.split('.')[1]));
-        console.log(payload);
         setUser({'id': payload.sub});
         setLoginMsg("");
     }

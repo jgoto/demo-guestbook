@@ -1,4 +1,4 @@
-const supabase = require('../util/supabaseClient');
+const {supabase} = require('../util/supabaseClient');
 
 /**
  * Fetches the message feed ordered by creation time (newest first)

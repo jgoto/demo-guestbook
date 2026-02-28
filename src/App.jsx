@@ -8,12 +8,14 @@ import Navigation from './components/layout/Navigation'
 import {AuthProvider} from './hooks/AuthContext'
 import { PostProvider } from './hooks/PostContext'
 import { Route, BrowserRouter, Routes } from 'react-router-dom'
+import { ProfileProvider } from './hooks/ProfileContext'
 
 function App() {
   
   return (
     <AuthProvider>
     <PostProvider>
+    <ProfileProvider>
     <BrowserRouter>
     <main>
       <h1>Demo Guestbook</h1>
@@ -27,6 +29,7 @@ function App() {
       </Routes>
     </main>        
     </BrowserRouter>
+    </ProfileProvider>
     </PostProvider>
     </AuthProvider>
   )
