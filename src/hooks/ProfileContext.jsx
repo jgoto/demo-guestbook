@@ -23,6 +23,7 @@ export function ProfileProvider({children}){
             return;
         }
         try {
+            console.log(user);
             const response = await fetch(`http://localhost:${import.meta.env.VITE_PORT}/api/profile/view/${user.id}`, {
                 method: "GET",
                 headers: {

@@ -18,6 +18,7 @@ export function AuthProvider({children}){
                 setLoggedIn(true);
                 const payload = JSON.parse(atob(token.split('.')[1]));
                 setUser({id: payload.sub,
+                    email: payload.email,
                     'token': token
                 });
         }    

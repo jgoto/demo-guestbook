@@ -17,4 +17,8 @@ async function getProfile(uuid){
     }
 }
 
+async function getUserData(uuid){
+    
+}
+
 module.exports = {getProfile};
