@@ -1,5 +1,6 @@
 export const AVATAR_SIZES = {
-    "sm": 64,
-    "md": 128,
-    "lg": 256
+    "sm": 32,
+    "md": 64,
+    "lg": 128,
+    "xl": 256
 };

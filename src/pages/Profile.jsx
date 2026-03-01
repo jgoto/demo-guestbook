@@ -1,5 +1,7 @@
+import { useState, useEffect } from "react";
 import { useProfile } from "../hooks/ProfileContext"
 import { useAuth } from "../hooks/AuthContext";
+import { profileFields } from "../config/profileConfig";
 import Avatar from "../components/profile/Avatar";
 
 export default function Profile(){
@@ -7,18 +9,20 @@ export default function Profile(){
     const {user} = useAuth();
 
     if(loading) return (<p>Loading...</p>);
-    if(!profile) return (<p>No Profile found</p>)
+    if(!profile) return (<p>No Profile found</p>);
 
+    const mergedData = {...profile, email: user.email};
+    console.log(mergedData);
     return (
         <div>
             <p>Profile</p>
             <div>
-                <Avatar src={profile.avatar_url} size={"md"} alt={profile.nickname} />
+                <Avatar src={mergedData.avatar_url} size={"md"} alt={mergedData.nickname} />
                 <ul>
-                    <li>{`first_name: ${profile.first_name}`}</li>
-                    <li>{`last_name: ${profile.last_name}`}</li>
-                    <li>{`nickname: ${profile.nickname}`}</li>
-                    <li>{`email: ${user.email}`}</li>
+                    <li>{`first_name: ${mergedData.first_name}`}</li>
+                    <li>{`last_name: ${mergedData.last_name}`}</li>
+                    <li>{`nickname: ${mergedData.nickname}`}</li>
+                    <li>{`email: ${mergedData.email}`}</li>
                 </ul>
             </div>
         </div>
