@@ -1,4 +1,5 @@
-const {getProfile} = require('../services/profileServices');
+const {viewProfile} = require('../services/profileServices');
+const {AppError} = require('../errors/AppError');
 
 /**
  * Route API request to get profile data from DB
@@ -10,20 +11,19 @@ const {getProfile} = require('../services/profileServices');
  * @description
  * return: 
  *   200 status on success
- *   404 status on missing profile
- *   500 status on Error
+ *   AppError (400 or 404) are dispatched on Error
+ *   500 status on other Error
  */
 async function routeGetProfile(req, res){
     const {userId} = req.params;
     try {
-        const profile = await getProfile(userId);
-        if (!profile)
-        {
-            return res.status(404).json({error: 'Profile not found'});
-        }
+        const profile = await viewProfile(userId);
         res.status(200).json(profile);
-    } catch (error) {
-        console.error(error);
+    } catch (err) {
+        if(err instanceof AppError){
+            return res.status(err.status).json(err.message);
+        }
+        console.error(err);
         res.status(500).json({error: 'Internal Server Error'});
     }
 }

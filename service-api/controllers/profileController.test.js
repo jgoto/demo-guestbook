@@ -1,9 +1,11 @@
+const {AppError} = require('../errors/AppError');
+
 jest.mock('../services/profileServices', ()=>({
-    getProfile: jest.fn()
+    viewProfile: jest.fn()
 }));
 
 const {routeGetProfile} = require('../controllers/profileController');
-const {getProfile} = require('../services/profileServices');
+const {viewProfile} = require('../services/profileServices');
 
 describe('profileController', () => {
     const req = { 
@@ -20,14 +22,14 @@ describe('profileController', () => {
     }
     beforeEach(() => jest.clearAllMocks());
     test('recive user profile data and updates res with data as json and http status 200', async ()=>{
-        getProfile.mockResolvedValue(testData);
+        viewProfile.mockResolvedValue(testData);
         await routeGetProfile(req, res);
-        expect(getProfile).toHaveBeenCalledWith('abc');
+        expect(viewProfile).toHaveBeenCalledWith('abc');
         expect(res.json).toHaveBeenCalledWith(testData);
     });
     test('returns 500 status when request generates an error', async ()=>{
         const consoleSpy = jest.spyOn(console, 'error').mockImplementation();
-        getProfile.mockRejectedValue(new Error('DB Error'));
+        viewProfile.mockRejectedValue(new Error('DB Error'));
         await routeGetProfile(req, res);
         
         expect(consoleSpy).toHaveBeenCalled();
@@ -36,14 +38,11 @@ describe('profileController', () => {
 
         consoleSpy.mockRestore();
     })
-    test('returns 404 status when the request is successful but has a null value', async ()=>{
-        const missingProfile = {
-            params: {user_id: '000'}
-        };
-        getProfile.mockResolvedValue(null);
-        await routeGetProfile(missingProfile, res);
-
-        expect(res.status).toHaveBeenCalledWith(404);
-        expect(res.json).toHaveBeenCalledWith({error: 'Profile not found'});
+    test('keep and return the message and status when an AppError is caught', async ()=>{
+        const testErr = new AppError("No user id", 400);
+        viewProfile.mockRejectedValue(testErr);
+        await routeGetProfile({params: {userId: ''}}, res);
+        expect(res.json).toHaveBeenCalledWith('No user id');
+        expect(res.status).toHaveBeenCalledWith(400);
     })
 })

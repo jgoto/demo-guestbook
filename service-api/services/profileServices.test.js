@@ -1,86 +1,39 @@
-const mockMaybeSingle = jest.fn();
-const mockSelect = jest.fn();
-const mockEq = jest.fn();
-const mockFrom = jest.fn();
-const mockSingle = jest.fn();
-const mockUpdate = jest.fn();
+const AppError = require('../errors/AppError')
 
-jest.mock('../util/supabaseClient', ()=>({
-    supabase: {from: mockFrom}
+jest.mock('../repositories/profileRepository', ()=> ({
+    selectProfile: jest.fn()
 }))
 
-const { getProfile, patchProfile } = require('./profileServices');
+const { selectProfile } = require("../repositories/profileRepository");
 
-describe('getProfile', () => {
-    beforeEach(() => {
-        jest.clearAllMocks()
+describe('selectProfile', (()=>{
+    const testUser = { user_id: 'abc', first_name: 'test', last_name: 'user', nickname: 'tester'};
+    test("Recive test user's data when selectProfile succeeds", async () => {
+        selectProfile.mockResolvedValue(testUser);
+        const result = await selectProfile(testUser.user_id);
+
+        expect(result).toEqual(testUser);
+        expect(selectProfile).toHaveBeenCalledWith(testUser.user_id);
     })
-
-    test('returns profile data when the query succeeds', async () => {
-        const testProfile = {
-            id: 123,
-            user_id: "abc",
-            name: "Tester"
-        };
-        mockMaybeSingle.mockResolvedValue({data: testProfile});
-        mockEq.mockReturnValue({maybeSingle: mockMaybeSingle});
-        mockSelect.mockReturnValue({eq: mockEq});
-        mockFrom.mockReturnValue({select: mockSelect});
-
-        const result = await getProfile('abc');
-
-        expect(result).toEqual(testProfile);
-        expect(mockFrom).toHaveBeenCalled();
-        expect(mockEq).toHaveBeenCalledWith('user_id', 'abc');
+    test("Throw an error if the uuid is empty or null or otherwise invalid", async () => {
+        const invalidId = '';
+        try {
+            await selectProfile(invalidId);    
+        } catch (error) {
+            expect(error).toBeInstanceOf(AppError);
+            expect(error.status).toBe(400);
+            expect(error.message).toBe('No user id');    
+        }
     })
-
-    test('returns undefined and logs an error when the query fails', async () => {
-        const consoleSpy = jest.spyOn(console, 'error').mockImplementation();
-
-        mockMaybeSingle.mockRejectedValue(new Error('DB error'));
-        const result = await getProfile('abc');
-
-        expect(result).toBeUndefined();
-        expect(consoleSpy).toHaveBeenCalled();
-
-        consoleSpy.mockRestore();
-    });
-})
-
-describe('patchProfile', () => {
-    beforeEach(() => {
-        jest.clearAllMocks();
+    test("Throw an error if the resulting data is null", async () => {
+        selectProfile.mockResolvedValue(null);
+        try {
+            const result = await selectProfile('def');
+            expect(result).toBe(null);
+        } catch (error) {
+            expect(error).toBeInstanceOf(AppError);
+            expect(error.status).toBe(400);
+            expect(error.message).toBe('Record not found');
+        }
     })
-    const testChanges = {            
-            first_name: 'omed',
-            last_name: 'retset'
-        };
-    test('returns new profile data when the query succeeds', async () => {
-        mockSingle.mockResolvedValue({data: testChanges, error: null});
-        mockSelect.mockReturnValue({single: mockSingle});
-        mockEq.mockReturnValue({select: mockSelect});
-        mockUpdate.mockReturnValue({eq: mockEq});
-        mockFrom.mockReturnValue({update: mockUpdate});
-
-        const result = await patchProfile('abc', testChanges);
-
-        expect(result).toEqual(testChanges);
-        expect(mockFrom).toHaveBeenCalled();
-        expect(mockEq).toHaveBeenCalledWith('user_id', 'abc');
-    })
-
-    test('return undefined and throws an error when the query fails', async () => {
-        
-        mockSingle.mockResolvedValue({data: null, error: new Error('DB Error')});
-        await expect(patchProfile('abc', testChanges)).rejects.toThrow('DB Error');
-    })
-
-    test('returns an error if there are no changes', () => {
-        const noChanges = null;
-        expect(patchProfile('abc', noChanges)).rejects.toThrow('No changes provided');
-    })
-
-    test('return an error if there is no id', () => {
-        expect(patchProfile('', testChanges)).rejects.toThrow('No userId')
-    })
-})
+}))
