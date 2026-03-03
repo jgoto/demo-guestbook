@@ -1,35 +1,32 @@
-const {supabase} = require('../util/supabaseClient');
+const {selectAllmessages, createMessage} = require('../repositories/postRepository');
 
 /**
- * Fetches the message feed ordered by creation time (newest first)
+ * Fetches the message feed.
  * @returns {Promise<Array|undefined>}
  */
 async function getFeed(){
-    try {
-        const feed = await supabase.from('messages').select('*').order('created_at', {ascending: false});
-        return feed.data;
-    } catch (error) {
-        console.error('Error fetching feed', error);
-    }
+    const {data, error} = await selectAllmessages();
+    if(error)
+        throw error;
+    return data;
 }
 
 /**
- * Inserts a new message into the messages table in Supabase
+ * requests a new message to be created
  * 
  * @param {Object} post - Message payload to insert
  * @returns {Promise<Object|undefined>}
  * 
  * @description
- * Returns the Supabase insert response on success.
- * Logs an error and returns undefined on failure.
+ * Returns insert response on success.
+ * throws an error on failure.
  */
-async function postMessage(post){
-    try {        
-        const reply = await supabase.from('messages').insert(post);
-        return reply;
-    } catch (error) {
-        console.error('Error adding post', error);
-    }
+async function createNewMessage(post){
+    /** Enforce posting limits here when functionality is available */
+    const {data, error} = await createMessage(post);
+    if(error)
+        throw error;
+    return data
 }
 
-module.exports = {getFeed, postMessage};
+module.exports = {getFeed, createNewMessage};

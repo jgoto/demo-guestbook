@@ -1,0 +1,59 @@
+const mockOrder = jest.fn();
+const mockSelect = jest.fn();
+const mockInsert = jest.fn();
+const mockFrom = jest.fn();
+
+jest.mock('../util/supabaseClient', () => ({
+    supabase: {from: mockFrom},
+}));
+
+const { selectAllmessages, createMessage } = require('./postRepository');
+
+describe('selectAllMessages', (()=>{
+    beforeEach(() => {
+        jest.clearAllMocks();
+    })
+    test('selectAllMessages returns feed data ordered most recent post first', async () => {
+        const mockData = [{ id: 1, text: 'Hello'}, {id: 2, text: 'World'}];
+        mockOrder.mockResolvedValue({ data: mockData});
+        mockSelect.mockReturnValue({order: mockOrder});
+        mockFrom.mockReturnValue({select: mockSelect});
+
+        const result = await selectAllmessages();
+
+        expect(result).toEqual(mockData);
+        expect(mockFrom).toHaveBeenCalledWith('messages');
+        expect(mockSelect).toHaveBeenCalledWith('*');
+        expect(mockOrder).toHaveBeenCalledWith('created_at', {ascending: false});
+    });
+}))
+
+test('createMessage sends a request to Supabase and recieves the inserted data', async () => {
+    const post = {text: 'new post'};
+    const mockReply = { data: [{ id: 1, ...post }]};
+
+    mockInsert.mockResolvedValue(mockReply);
+    mockFrom.mockReturnValue({insert: mockInsert})
+
+    const result = await createMessage(post);
+    expect(result).toEqual(mockReply.data);
+    expect(mockFrom).toHaveBeenCalledWith('messages');
+    expect(mockInsert).toHaveBeenCalledWith(post);
+});
+
+test('selectAllRecords records error and returns undefined when Supabase fails', async () => {
+    mockOrder.mockResolvedValue({data: null, error: new Error('Something went wrong')});
+    mockSelect.mockReturnValue({order: mockOrder});
+    mockFrom.mockReturnValue({select: mockSelect});
+
+    await expect(selectAllmessages()).rejects.toThrow('Something went wrong');
+});
+
+test('postMessage records error and returns undefined when Supabase fails', async () => {
+    const post = { text: 'Failing post' };
+
+    mockInsert.mockResolvedValue({data: null, error: new Error('Something went wrong')});
+    mockFrom.mockReturnValue({insert: mockInsert});
+    
+    await expect(createMessage(post)).rejects.toThrow('Something went wrong');
+})
