@@ -19,9 +19,9 @@ describe('selectAllMessages', (()=>{
         mockSelect.mockReturnValue({order: mockOrder});
         mockFrom.mockReturnValue({select: mockSelect});
 
-        const result = await selectAllmessages();
+        const data = await selectAllmessages();
 
-        expect(result).toEqual(mockData);
+        expect(data).toEqual(mockData);
         expect(mockFrom).toHaveBeenCalledWith('messages');
         expect(mockSelect).toHaveBeenCalledWith('*');
         expect(mockOrder).toHaveBeenCalledWith('created_at', {ascending: false});

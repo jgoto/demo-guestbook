@@ -9,16 +9,16 @@ const { getFeed, createNewMessage } = require('./postServices');
 describe('getFeed', (()=>{
     test('getFeed returns feed data', async () => {
         const mockData = [{ id: 1, text: 'Hello'}, {id: 2, text: 'World'}];
-        selectAllmessages.mockResolvedValue({data: mockData, error: null});
-        const result = await getFeed();
+        selectAllmessages.mockResolvedValue(mockData);
+        const data = await getFeed();
 
-        expect(result).toEqual(mockData);
+        expect(data).toEqual(mockData);
     });
 }))
 
 test('postMessage returns inserted data', async () => {
     const post = {text: 'new post'};
-    createMessage.mockResolvedValue({data: post, error: null})
+    createMessage.mockResolvedValue(post)
 
     const result = await createNewMessage(post);
     expect(result).toEqual(post);

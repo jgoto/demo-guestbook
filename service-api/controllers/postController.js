@@ -16,7 +16,7 @@ async function routeGetFeed(req, res){
         res.status(200).json(feed);        
     } catch (error) {
         console.error(error);
-        res.status(500);
+        res.status(500).json;
     }
 }
 

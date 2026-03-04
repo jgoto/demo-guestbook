@@ -29,7 +29,6 @@ async function updateProfile(uuid, changes){
             .eq('user_id', uuid)
             .select()
             .single();
-    
     if(error)
         throw error;
     return data;
