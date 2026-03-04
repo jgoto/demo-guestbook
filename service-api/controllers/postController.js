@@ -1,22 +1,41 @@
-const {getFeed, postMessage} = require('../services/postServices');
+const {getFeed, createNewMessage} = require('../services/postServices');
 
+/** routeGetFeed
+ * Fetch all messages as a feed
+ * @param {import('express'.Request)} req - Express Request
+ * @param {import('express'.Response)} res - Express Response
+ * @returns {Promise<void>}
+ * @throws http 500 status if request to database fails
+ * @description
+ * return status 200 if request succeeds
+ * status 500 if there are errors.
+ */
 async function routeGetFeed(req, res){
     try {
         const feed = await getFeed();
-        res.json(feed);
-        
+        res.status(200).json(feed);        
     } catch (error) {
         console.error(error);
+        res.status(500);
     }
 }
 
-async function routeNewPost(req, res){
+/** RouteCreateMessage
+ * Create a new message with a payload from the request
+ * @param {import('express'.Request)} req - Express Request
+ * @param {import('express'.Response)} res - Express Response
+ * @returns {Promise<void>}
+ * @description
+ * returns http status 200 on success
+ * returns http status 500 on failure
+ */
+async function routeCreateMessage(req, res){
     const post = {
         content: req.body.content,
         uuid: req.body.uuid
     }
     try {
-        const reply = await postMessage(post);
+        const reply = await createNewMessage(post);
         console.log("Requesting user data from API", reply)
         res.status(201).json(reply);
     } catch (error) {
@@ -24,4 +43,4 @@ async function routeNewPost(req, res){
     }
 }
 
-module.exports = {routeGetFeed, routeNewPost};
+module.exports = {routeGetFeed, routeCreateMessage};

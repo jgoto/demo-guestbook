@@ -20,7 +20,6 @@ describe('profileController', () => {
         user_id: 'abc',
         name: 'Tester'
     }
-    beforeEach(() => jest.clearAllMocks());
     test('recive user profile data and updates res with data as json and http status 200', async ()=>{
         viewProfile.mockResolvedValue(testData);
         await routeGetProfile(req, res);
