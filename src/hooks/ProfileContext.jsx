@@ -4,17 +4,17 @@ import { useAuth } from './AuthContext';
 const ProfileContext = createContext();
 
 export function ProfileProvider({children}){
-    const {loggedIn, user} = useAuth();
-    const token = user?.token;
+    const {loggedIn, user, userSession} = useAuth();
+    const token = userSession?.access_token;
     const [profile, setProfile] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
     useEffect(()=>{
-        if(token){
+        if(token && user?.user_id){
             fetchProfile();
         }
-    },[token, user?.id])
+    },[token, user?.user_id])
 
     async function fetchProfile(){
         if(!token)
@@ -23,7 +23,7 @@ export function ProfileProvider({children}){
             return;
         }
         try {
-            const response = await fetch(`http://localhost:${import.meta.env.VITE_PORT}/api/profile/view/${user.id}`, {
+            const response = await fetch(`http://localhost:${import.meta.env.VITE_PORT}/api/profile/view/${user.user_id}`, {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",
@@ -39,7 +39,7 @@ export function ProfileProvider({children}){
         }
     }
 
-    const value = {profile, loading, fetchProfile};
+    const value = {profile, loading, fetchProfile, error};
 
     return (
         <ProfileContext.Provider value={value}>

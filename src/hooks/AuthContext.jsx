@@ -7,26 +7,27 @@ export function AuthProvider({children}){
     const [user, setUser] = useState(null);
     const [loggedIn, setLoggedIn] = useState(false);
     const [loginMsg, setLoginMsg] = useState("");
+    const [userSession, setUserSession] = useState(null);
 
     useEffect(()=>{
-        try {
-            const token = localStorage.getItem('token');
-            
-            if(!token || token==='{}' || token.trim()==='')
-                return;
-            if(token){
-                setLoggedIn(true);
-                const payload = JSON.parse(atob(token.split('.')[1]));
-                setUser({id: payload.sub,
-                    email: payload.email,
-                    'token': token
-                });
-        }    
-        } catch (error) {
-            console.error("Something went wrong on useEffect", error);   
-        }
-        
+        checkSession();
+
+        const {data: listener} = reactSupabase.auth.onAuthStateChange((_event, session) => {
+            setUserSession(session);
+            setUser(session?.user ? {user_id: session.user.user_id, email: session.user.email} : null);
+            setLoggedIn(!!session);
+        });
+
+        return () => listener.subscription.unsubscribe();
     },[])
+
+    const checkSession = async () =>  {
+        const {data} = await reactSupabase.auth.getSession();
+        const s = data.session;
+        setUserSession(s);
+        setUser(s?.user ? {user_id: s.user.id, email: s.user.email} : null);
+        setLoggedIn(!!s);
+    }
 
     async function authenticate({email, password}){
         try {
@@ -34,7 +35,7 @@ export function AuthProvider({children}){
             if(error)
                 throw error;
 
-            setUserState(data.session.access_token);
+            setUserState(data.session);
             return {message: "Login Successful"};
 
         } catch (error) {
@@ -43,15 +44,18 @@ export function AuthProvider({children}){
         }
     }
 
-    const setUserState = (token)=>{
-        localStorage.setItem('token', token);
+    const setUserState = (session)=>{
+        if(!session)
+            return;
+        localStorage.setItem('token', session.access_token);
+        setUserSession(session);
         setLoggedIn(true);
-        const payload = JSON.parse(atob(token.split('.')[1]));
-        setUser({'id': payload.sub});
+        setUser({ user_id: session.user.id, email: session.user.email });
         setLoginMsg("");
     }
     
-    const logout = () =>{
+    const logout = async () =>{
+        await reactSupabase.auth.signOut();
         localStorage.removeItem('token');
         setLoginMsg("You have logged out");
         setLoggedIn(false);
@@ -59,7 +63,7 @@ export function AuthProvider({children}){
     }
 
     return (
-        <AuthContext.Provider value={{setUserState, logout, authenticate, user, loggedIn, loginMsg}}>
+        <AuthContext.Provider value={{setUserState, logout, authenticate, user, loggedIn, loginMsg, userSession}}>
             {children}
         </AuthContext.Provider>
     )

@@ -5,9 +5,13 @@ const mockFrom = jest.fn();
 const mockSingle = jest.fn();
 const mockUpdate = jest.fn();
 
-jest.mock('../util/supabaseClient', ()=>({
+jest.mock('../util/supabaseClient', ()=>({ //keep this until updateProfile is updated to support rls
     supabase: {from: mockFrom}
-}))
+}));
+
+const mockClient = {
+    from: mockFrom
+}
 
 const { selectProfile, updateProfile } = require('./profileRepository');
 
@@ -27,7 +31,7 @@ describe('selectProfile', () => {
         mockSelect.mockReturnValue({eq: mockEq});
         mockFrom.mockReturnValue({select: mockSelect});
 
-        const result = await selectProfile('abc');
+        const result = await selectProfile('abc', mockClient);
 
         expect(result).toEqual(testProfile);
         expect(mockFrom).toHaveBeenCalled();

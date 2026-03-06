@@ -1,17 +1,34 @@
-jest.mock('../util/supabaseClient', () => ({
+/*jest.mock('../util/supabaseClient', () => ({
     auth: { getUser: jest.fn() }
+}));*/
+jest.mock('../util/createUserClient');
+
+jest.mock('../util/supabaseClient', () => ({
+    supabase: {
+        auth: {
+            getUser: jest.fn()
+        }
+    }
 }));
-
-const supabase = require('../util/supabaseClient');
+const { supabase } = require('../util/supabaseClient');
 const { verifyToken } = require('./verifyToken');
+const { createUserClient } = require('../util/createUserClient');
 
-test('calls next and attaches user on valid token', async () => {
+describe('verifyToken', (() => {
+    const jsonMock = jest.fn();
+    const next = jest.fn();
+
+    beforeEach(()=>{
+        jsonMock.mockClear();
+        next.mockClear();
+    })
+    test('calls next and attaches user on valid token', async () => {
     const mockUser = { id: 'user-123', email: 'test@example.com' };
     supabase.auth.getUser.mockResolvedValue({ data: {user: mockUser}, error: null });
+    createUserClient.mockReturnValue({});
 
     const req = { headers: {authorization: 'Bearer validtoken'}};
-    const res = {};
-    const next = jest.fn();
+    const res = { status: jest.fn(() => ({json: jsonMock}))};
 
     await verifyToken(req, res, next);
 
@@ -20,11 +37,9 @@ test('calls next and attaches user on valid token', async () => {
 });
 
 test('returns 401 if auth header is missing or not a string', async () => {
-    const req = { headers: {} };
-    const jsonMock = jest.fn();
-    const res = { status: jest.fn(() => ({json: jsonMock}))};
-    const next = jest.fn();
-
+    const req = { headers: {} }; 
+    const res = { status: jest.fn(() => ({json: jsonMock}))};  
+    
     await verifyToken(req, res, next);
 
     expect(res.status).toHaveBeenCalledWith(401);
@@ -32,26 +47,20 @@ test('returns 401 if auth header is missing or not a string', async () => {
     expect(next).not.toHaveBeenCalled();
 });
 
-test('returns 401 if token is missing', async () => {
-    const req = { headers: {authorization: 'Bearer ' }};
-    const jsonMock = jest.fn();
-    const res = { status: jest.fn(() => ({ json: jsonMock }))};
-    const next = jest.fn();
+test('returns 401 if auth header is not formatted as "Bearer <token>"', async () => {
+    const req = {headers: {authorization: 'not validtoken'}};
+    const res = { status: jest.fn(() => ({json: jsonMock}))};
 
     await verifyToken(req, res, next);
-
     expect(res.status).toHaveBeenCalledWith(401);
-    expect(jsonMock).toHaveBeenCalledWith({ message: "Token missing or not provided" });
+    expect(jsonMock).toHaveBeenCalledWith({message: "Auth header must be 'Bearer <token>'"});
     expect(next).not.toHaveBeenCalled();
-});
+})
 
 test('returns 403 if Supabase returns error or no user', async () => {
     supabase.auth.getUser.mockResolvedValue({ data: null, error: new Error('Invalid')});
-
     const req = { headers: {authorization: 'Bearer sometoken' }};
-    const jsonMock = jest.fn();
-    const res = { status: jest.fn(() => ({ json: jsonMock}))};
-    const next = jest.fn();
+    const res = { status: jest.fn(() => ({json: jsonMock}))};
 
     await verifyToken(req, res, next);
 
@@ -59,3 +68,19 @@ test('returns 403 if Supabase returns error or no user', async () => {
     expect(jsonMock).toHaveBeenCalledWith({ message: "Invalid token"});
     expect(next).not.toHaveBeenCalled();
 })
+
+test('returns 500 if a thrown error is caught', async () => {
+    const consoleSpy = jest.spyOn(console, 'error').mockImplementation(()=>{});    supabase.auth.getUser.mockRejectedValue(new Error('Network failure'));
+    const req = { headers: {authorization: 'Bearer sometoken'}};
+    const res = { status: jest.fn(() => ({json: jsonMock}))};
+
+    await verifyToken(req, res, next);
+
+    expect(res.status).toHaveBeenCalledWith(500);
+    expect(jsonMock).toHaveBeenCalledWith({message: "Authentication failed"})
+    expect(next).not.toHaveBeenCalled();
+    consoleSpy.mockRestore();
+})
+}));
+
+

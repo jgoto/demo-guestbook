@@ -17,7 +17,7 @@ const {AppError} = require('../errors/AppError');
 async function routeGetProfile(req, res){
     const {userId} = req.params;
     try {
-        const profile = await viewProfile(userId);
+        const profile = await viewProfile(userId, req.userClient);
         res.status(200).json(profile);
     } catch (err) {
         if(err instanceof AppError){

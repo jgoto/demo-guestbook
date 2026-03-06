@@ -1,7 +1,5 @@
-import { useState, useEffect } from "react";
 import { useProfile } from "../hooks/ProfileContext"
 import { useAuth } from "../hooks/AuthContext";
-import { profileFields } from "../config/profileConfig";
 import Avatar from "../components/profile/Avatar";
 
 export default function Profile(){

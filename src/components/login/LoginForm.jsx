@@ -11,8 +11,8 @@ export default function LoginForm(){
     const handleLogin = async (e) => {
         e.preventDefault();
 
-        const token = await authenticate({email, password})
-        if(!token)
+        const session = await authenticate({email, password})
+        if(!session)
             return;
 
         navigate('/');
@@ -21,10 +21,10 @@ export default function LoginForm(){
     return (
         <form onSubmit={handleLogin}>
             Username <input type = "email" placeholder = "Enter Email" value = {email} 
-                onChange={((e)=>setEmail(e.target.value))} required />
+                onChange={e=>setEmail(e.target.value)} required />
             <br />
             Password <input type = "password" placeholder = "Enter Password" value = {password} 
-                onChange={((e)=>setPassword(e.target.value))} required />
+                onChange={e=>setPassword(e.target.value)} required />
             <button type="submit">Login</button>
         </form>
     )

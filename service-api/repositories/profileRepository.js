@@ -3,11 +3,12 @@ const {supabase} = require('../util/supabaseClient');
 /**
  * Retrieves user's profile data from DB
  * @param {string} uuid - user_id
+ * @param {import('@supabase/supabase-js').SupabaseClient} userClient - userClient - Supabase client authorized with requestor's token
  * @returns - {Promise<void>}
  */
-async function selectProfile(uuid){
+async function selectProfile(uuid, userClient){
     try {
-        const { data } = await supabase.from('profiles')
+        const { data } = await userClient.from('profiles')
             .select('*')
             .eq('user_id', uuid)
             .maybeSingle();      

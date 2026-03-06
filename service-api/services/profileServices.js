@@ -1,12 +1,17 @@
 const {selectProfile, updateProfile} = require('../repositories/profileRepository');
 const AppError = require('../errors/AppError');
 
-
-async function viewProfile(uuid){
+/**
+ * viewProfile
+ * @param {string} uuid - user id of the requesting user
+ * @param {import('@supabase/supabase-js').SupabaseClient} userClient - userClient - Supabase client authorized with requestor's token
+ * @returns {Promise<void>}
+ */
+async function viewProfile(uuid, userClient){
     if(!uuid || typeof uuid!=='string' || uuid.trim()===''){
         throw new AppError('No user id', 400); 
     }
-    const results = await selectProfile(uuid);
+    const results = await selectProfile(uuid, userClient);
         if(!results) { throw new AppError('Record not found', 404)};
         return results;
 } 

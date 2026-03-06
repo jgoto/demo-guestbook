@@ -36,7 +36,6 @@ async function routeCreateMessage(req, res){
     }
     try {
         const reply = await createNewMessage(post);
-        console.log("Requesting user data from API", reply)
         res.status(201).json(reply);
     } catch (error) {
         console.error(error);

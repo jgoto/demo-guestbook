@@ -9,7 +9,8 @@ const {viewProfile} = require('../services/profileServices');
 
 describe('profileController', () => {
     const req = { 
-        params: {userId: 'abc'} 
+        params: {userId: 'abc'},
+        userClient: {} 
     };
     const res = {
         status: jest.fn().mockReturnThis(), 
@@ -23,7 +24,7 @@ describe('profileController', () => {
     test('recive user profile data and updates res with data as json and http status 200', async ()=>{
         viewProfile.mockResolvedValue(testData);
         await routeGetProfile(req, res);
-        expect(viewProfile).toHaveBeenCalledWith('abc');
+        expect(viewProfile).toHaveBeenCalledWith('abc', {});
         expect(res.json).toHaveBeenCalledWith(testData);
     });
     test('returns 500 status when request generates an error', async ()=>{
