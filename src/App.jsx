@@ -4,7 +4,9 @@ import Profile from './pages/Profile'
 import Login from './pages/Login'
 import Contact from './pages/Contact'
 import Wordcloud from './pages/Wordcloud'
+import PasswordChange from './pages/PasswordChange'
 import Navigation from './components/layout/Navigation'
+import ProtectedRoute from './components/ProtectedRoute'
 import {AuthProvider} from './hooks/AuthContext'
 import { PostProvider } from './hooks/PostContext'
 import { Route, BrowserRouter, Routes } from 'react-router-dom'
@@ -26,6 +28,7 @@ function App() {
         <Route path = '/login' element = {<Login />} />
         <Route path = '/contact' element = {<Contact />} />
         <Route path = '/wordcloud' element = {<Wordcloud />} />
+        <Route path = '/changepassword' element = {<ProtectedRoute><PasswordChange /></ProtectedRoute>} />
       </Routes>
     </main>        
     </BrowserRouter>

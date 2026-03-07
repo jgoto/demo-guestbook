@@ -39,6 +39,10 @@ export function ProfileProvider({children}){
                     }
                 })
             ]);
+            if(!profileRes.ok)
+                throw new Error("Profile load failed");
+            if(!avatarRes.ok)
+                throw new Error("Avatar load failed");
             const profile = await profileRes.json();
             const avatar = await avatarRes.json();
             setProfile(profile);
