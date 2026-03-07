@@ -7,31 +7,42 @@ export function ProfileProvider({children}){
     const {loggedIn, user, userSession} = useAuth();
     const token = userSession?.access_token;
     const [profile, setProfile] = useState(null);
+    const [avatar, setAvatar] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
     useEffect(()=>{
         if(token && user?.user_id){
-            fetchProfile();
+            loadProfileData();
         }
     },[token, user?.user_id])
 
-    async function fetchProfile(){
-        if(!token)
-        {
+    async function loadProfileData(){
+        if(!token){
             setLoading(false);
             return;
         }
         try {
-            const response = await fetch(`http://localhost:${import.meta.env.VITE_PORT}/api/profile/view/${user.user_id}`, {
-                method: "GET",
-                headers: {
-                    "Content-Type": "application/json",
-                    Authorization: `Bearer ${token}`
-                }
-            });
-            const result = await response.json();
-            setProfile(result);
+            const [profileRes, avatarRes] = await Promise.all([
+                fetch(`http://localhost:${import.meta.env.VITE_PORT}/api/profile/view/${user.user_id}`, {
+                    method: 'GET',
+                    headers: {
+                        "Content-Type": "application/json",
+                        Authorization: `Bearer ${token}`
+                    }
+                }),
+                fetch(`http://localhost:${import.meta.env.VITE_PORT}/api/avatar/view/${user.user_id}`, {
+                    method: 'GET',
+                    headers: {
+                        "Content-Type": "application/json",
+                        Authorization: `Bearer ${token}`
+                    }
+                })
+            ]);
+            const profile = await profileRes.json();
+            const avatar = await avatarRes.json();
+            setProfile(profile);
+            setAvatar(avatar);
         } catch (error) {
             setError(`An error occured loading profile ${error.message}`);
         } finally {
@@ -39,7 +50,7 @@ export function ProfileProvider({children}){
         }
     }
 
-    const value = {profile, loading, fetchProfile, error};
+    const value = {profile, avatar, loading, loadProfileData, error};
 
     return (
         <ProfileContext.Provider value={value}>

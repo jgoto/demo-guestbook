@@ -1,4 +1,3 @@
-import { DEFAULT_AVATAR } from "../../constants/assets";
 import { AVATAR_SIZES } from "../../constants/ui";
 
 export default function Avatar({src, size = "md", alt}){
@@ -6,7 +5,7 @@ export default function Avatar({src, size = "md", alt}){
     const dimensions = AVATAR_SIZES[size] || AVATAR_SIZES.md;
 
     return(
-        <img src = {src || DEFAULT_AVATAR}
+        <img src = {src}
             className = {className}
             alt = {alt}
             onError={(e) => {e.currentTarget.src=DEFAULT_AVATAR}}

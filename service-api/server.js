@@ -3,9 +3,7 @@ dotenv.config();
 
 const express = require('express');
 const cors = require('cors');
-const authRoutes = require('./routes/authRoutes');
-const postRoutes = require('./routes/postRoutes');
-const profileRoutes = require('./routes/profileRoutes');
+const registerRoutes = require('./routes/index');
 const app = express();
 
 const PORT = process.env.PORT || 5000;
@@ -15,9 +13,7 @@ app.use(cors({
 }));
 app.use(express.json());
 
-app.use('/api/auth', authRoutes);
-app.use('/api/posts', postRoutes);
-app.use('/api/profile', profileRoutes)
+registerRoutes(app);
 
 app.get('/ping', (req, res) => {
     return res.json({message: "Pong"});

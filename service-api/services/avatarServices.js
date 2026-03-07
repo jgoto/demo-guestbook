@@ -8,9 +8,9 @@ const { selectAvatarSignedUrl } = require("../repositories/avatarRepository");
  * @returns {Promise<void>} - Object with signed url to avatar
  */
 async function viewAvatar(user_id, userClient){
-    if(!user_id || typeof user_id !== string || user_id.trim()==='')
+    if(!user_id || typeof user_id !== 'string' || user_id.trim()==='')
         throw new AppError("No user id", 400);
-    const results = selectAvatarSignedUrl(user_id, userClient);
+    const results = await selectAvatarSignedUrl(user_id, userClient);
     if(!results)
         throw new AppError("Record not found", 404); // in future replace with fallback image
     return results;

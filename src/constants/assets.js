@@ -1,1 +1,1 @@
-export const DEFAULT_AVATAR = "https://ewxzsvdsgedqqpvsdoth.supabase.co/storage/v1/object/public/avatars/profile00.png";
+//export const DEFAULT_AVATAR = "https://ewxzsvdsgedqqpvsdoth.supabase.co/storage/v1/object/public/avatars/profile00.png";
