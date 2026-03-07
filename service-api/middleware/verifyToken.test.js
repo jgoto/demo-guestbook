@@ -1,6 +1,3 @@
-/*jest.mock('../util/supabaseClient', () => ({
-    auth: { getUser: jest.fn() }
-}));*/
 jest.mock('../util/createUserClient');
 
 jest.mock('../util/supabaseClient', () => ({

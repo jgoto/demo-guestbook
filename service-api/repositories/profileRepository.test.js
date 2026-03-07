@@ -10,6 +10,7 @@ jest.mock('../util/supabaseClient', ()=>({ //keep this until updateProfile is up
 }));
 
 const mockClient = {
+
     from: mockFrom
 }
 
@@ -42,7 +43,7 @@ describe('selectProfile', () => {
         const consoleSpy = jest.spyOn(console, 'error').mockImplementation();
 
         mockMaybeSingle.mockRejectedValue(new Error('DB error'));
-        const result = await selectProfile('abc');
+        const result = await selectProfile('abc', mockClient);
 
         expect(result).toBeUndefined();
         expect(consoleSpy).toHaveBeenCalled();
