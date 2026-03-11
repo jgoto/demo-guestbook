@@ -14,7 +14,7 @@ export function AuthProvider({children}){
 
         const {data: listener} = reactSupabase.auth.onAuthStateChange((_event, session) => {
             setUserSession(session);
-            setUser(session?.user ? {user_id: session.user.user_id, email: session.user.email} : null);
+            setUser(session?.user ? {user_id: session.user.id, email: session.user.email} : null);
             setLoggedIn(!!session);
         });
 
