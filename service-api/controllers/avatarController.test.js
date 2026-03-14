@@ -1,3 +1,5 @@
+const {AppError} = require('../errors/AppError');
+
 jest.mock('../services/avatarServices', () => ({
     viewAvatar: jest.fn()
 }));
@@ -27,5 +29,20 @@ describe('routeGetAvatar', (() => {
         expect(viewAvatar).toHaveBeenCalledWith('abc', {});
         expect(res.status).toHaveBeenCalledWith(200);
         expect(res.json).toHaveBeenCalledWith({data: testData});        
+    });
+    test('On DB failure, routeGetAvatar catches errors and returns them with http status 500', async () => {
+        const consoleSpy = jest.spyOn(console, 'error').mockImplementation();
+        viewAvatar.mockRejectedValue(new Error('something went wrong'));
+        const result = await routeGetAvatar(req, res);
+        expect(consoleSpy).toHaveBeenCalled();
+        expect(res.status).toHaveBeenCalledWith(500);
+        expect(res.json).toHaveBeenCalledWith({error: 'Internal Server Error'});
+        consoleSpy.mockRestore();
+    });
+    test('On other failures, routeGetAvatar returns custom error http status and message', async () => {
+        viewAvatar.mockRejectedValue(new AppError("Record not found", 404));
+        const result = await routeGetAvatar(req, res);
+        expect(res.status).toHaveBeenCalledWith(404);
+        expect(res.json).toHaveBeenCalledWith("Record not found");
     })
-}))
+}));
