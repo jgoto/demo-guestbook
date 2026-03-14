@@ -1,4 +1,5 @@
-import { useAuth } from "../hooks/AuthContext"
+import { useAuth } from "../hooks/AuthContext";
+import { useProfile } from "../hooks/ProfileContext";
 import { useState } from "react";
 import {submitContactForm} from "../helpers/submitContactForm";
 import ContactForm from "../components/contact/ContactFrom";
@@ -6,6 +7,7 @@ import PublicContactForm from "../components/contact/PublicContactForm";
 
 export default function Contact(){
     const {user, loggedIn} = useAuth();
+    const {profile} = useProfile();
     const [msg, setMsg] = useState("");
     const [submitted, setSubmitted] = useState(false);
 
@@ -27,7 +29,7 @@ export default function Contact(){
         <div>
             <h2>Contact Us</h2>
             {(!loggedIn) ? <PublicContactForm onSubmit={handleSubmit}/> : 
-            <ContactForm user={user} onSubmit={handleSubmit}/>}
+            <ContactForm email={user.email} name={`${profile.first_name} ${profile.last_name}`} onSubmit={handleSubmit}/>}
         </div>
     )
 }

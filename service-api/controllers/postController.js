@@ -26,7 +26,7 @@ async function routeGetFeed(req, res){
  * @param {import('express'.Response)} res - Express Response
  * @returns {Promise<void>}
  * @description
- * returns http status 200 on success
+ * returns http status 201 on success
  * returns http status 500 on failure
  */
 async function routeCreateMessage(req, res){
@@ -39,6 +39,7 @@ async function routeCreateMessage(req, res){
         res.status(201).json(reply);
     } catch (error) {
         console.error(error);
+        res.status(500).json('Something went wrong')
     }
 }
 

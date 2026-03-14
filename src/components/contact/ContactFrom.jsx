@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-export default function ContactForm({user, onSubmit}){
+export default function ContactForm({email, name, onSubmit}){
     const [contact, setContact] = useState({
         subject: "",
         message: ""
@@ -17,8 +17,8 @@ export default function ContactForm({user, onSubmit}){
         event.preventDefault();
         onSubmit({
             ...contact,
-            user_id: user.user_id,
-            email: user.email,
+            name: name,
+            email: email,
         })      
     }
 
