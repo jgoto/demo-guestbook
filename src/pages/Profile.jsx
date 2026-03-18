@@ -1,9 +1,10 @@
 import { useProfile } from "../hooks/ProfileContext"
 import { useAuth } from "../hooks/AuthContext";
-import Avatar from "../components/profile/Avatar";
+import DisplayProfile from "../components/profile/DisplayProfile";
+import EditProfile from "../components/profile/EditProfile";
 
 export default function Profile(){
-    const {profile, avatar, loading} = useProfile();
+    const {editProfileForm, profile, avatar, loading} = useProfile();
     const {user} = useAuth();
 
     if(loading) return (<p>Loading...</p>);
@@ -13,15 +14,7 @@ export default function Profile(){
     return (
         <div>
             <p>Profile</p>
-            <div>
-                <Avatar src={mergedData.signedUrl} size={"md"} alt={mergedData.nickname} />
-                <ul>
-                    <li>{`first_name: ${mergedData.first_name}`}</li>
-                    <li>{`last_name: ${mergedData.last_name}`}</li>
-                    <li>{`nickname: ${mergedData.nickname}`}</li>
-                    <li>{`email: ${mergedData.email}`}</li>
-                </ul>
-            </div>
+            <EditProfile onSubmit={editProfileForm} mergedData={mergedData} />
         </div>
         
     )

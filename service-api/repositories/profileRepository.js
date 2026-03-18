@@ -21,11 +21,13 @@ async function selectProfile(uuid, userClient){
 /**
  * Updates partial profile changes to the database
  * @param {string} uuid - user_id for the profile to change
+ * @param {import('@supabase/supabase-js').SupabaseClient} userClient - userClient - Supabase client authorized with requestor's token
  * @param {Object} changes - object with changes
  * @returns - {Promise<void>} - Updated profile
  */
-async function updateProfile(uuid, changes){
-    const { data, error } = await supabase.from('profiles')
+async function updateProfile(uuid, userClient, changes){
+    console.log(`UUID: ${uuid}`);
+    const { data, error } = await userClient.from('profiles')
             .update(changes)
             .eq('user_id', uuid)
             .select()

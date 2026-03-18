@@ -36,7 +36,7 @@ export function ProfileProvider({children}){
                     headers: {
                         "Content-Type": "application/json",
                         Authorization: `Bearer ${token}`
-                    }
+                    },                    
                 })
             ]);
             if(!profileRes.ok)
@@ -54,7 +54,27 @@ export function ProfileProvider({children}){
         }
     }
 
-    const value = {profile, avatar, loading, loadProfileData, error};
+    async function editProfileForm(newProfile){
+        if(!token){
+            return ({msg: "You must login to make changes"});
+        }            
+        try {
+            const result = await fetch(`http://localhost:${import.meta.env.VITE_PORT}/api/profile/update/${user.user_id}`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`
+                },
+                body: JSON.stringify({ ...newProfile })
+            })
+            if(!result.ok)
+                throw new Error("Error saving profile");
+        } catch (error) {
+            console.error("Profile save failed");
+        } 
+    }
+
+    const value = {profile, avatar, loading, loadProfileData, editProfileForm, error};
 
     return (
         <ProfileContext.Provider value={value}>

@@ -67,7 +67,7 @@ describe('updateProfile', () => {
         mockUpdate.mockReturnValue({eq: mockEq});
         mockFrom.mockReturnValue({update: mockUpdate});
 
-        const result = await updateProfile('abc', testChanges);
+        const result = await updateProfile('abc', mockClient, testChanges);
 
         expect(result).toEqual(testChanges);
         expect(mockFrom).toHaveBeenCalled();
@@ -77,6 +77,6 @@ describe('updateProfile', () => {
     test('return undefined and throws an error when the query fails', async () => {
         
         mockSingle.mockResolvedValue({data: null, error: new Error('DB Error')});
-        await expect(updateProfile('abc', testChanges)).rejects.toThrow('DB Error');
+        await expect(updateProfile('abc', mockClient, testChanges)).rejects.toThrow('DB Error');
     })
 })

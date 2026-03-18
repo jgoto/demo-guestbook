@@ -12,8 +12,21 @@ async function viewProfile(uuid, userClient){
         throw new AppError('No user id', 400); 
     }
     const results = await selectProfile(uuid, userClient);
-        if(!results) { throw new AppError('Record not found', 404)};
-        return results;
-} 
+    if(!results) { throw new AppError('Record not found', 404)}
+    return results;
+}
 
-module.exports = {viewProfile};
+/**
+ * editProfile
+ * @param {Object} payload - containing new data to update user profile
+ * @param {import('@supabase/supabase-js').SupabaseClient} userClient - Supabase client authorized with requestor's token
+ * @returns {Promise<void>}
+ */
+async function editProfile(userId, userClient, payload){
+    console.log(payload);
+    const results = await updateProfile(userId, userClient, payload);
+    if(!results) { throw new AppError('Record not found', 404)};
+    return results;
+}
+
+module.exports = {viewProfile, editProfile};
