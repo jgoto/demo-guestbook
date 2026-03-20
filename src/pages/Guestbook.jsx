@@ -14,7 +14,7 @@ export default function Guestbook(){
 
   return (
     <div>
-      {(loggedIn) && <NewPostForm user = {user.id} comment = {comment} setComment = {setComment} /> }
+      {(loggedIn) && <NewPostForm user = {user.user_id} comment = {comment} setComment = {setComment} /> }
       <ul>
           {feed.map((post)=>(
           <li key={post.id}>{post.content}</li>))}

@@ -1,4 +1,5 @@
 import { useContext, createContext, useState, useEffect } from "react";
+import { useAuth } from "./AuthContext";
 
 const PostContext = createContext();
 
@@ -6,6 +7,8 @@ export function PostProvider({children}){
     const [feed, setFeed] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const {userSession} = useAuth();
+    const token = userSession?.access_token;
 
     const fetchFeed = async ()=>{
         try {
@@ -32,11 +35,16 @@ export function PostProvider({children}){
                 console.log("ending early");
                 return;
             }
+            if(!token){
+                console.log("Token missing or invalid");
+                return;
+            }
 
             const response = await fetch('http://localhost:5000/api/posts/message', {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${token}`
                 },
                 body: JSON.stringify({
                     'content': newComment,

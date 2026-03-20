@@ -6,6 +6,7 @@ export default function NewPostForm({user, comment, setComment}){
         e.preventDefault();
         try {
             const response = await submitNewPost(comment, user);
+            setComment('');
         } catch (error) {
             console.error(error);  
         }

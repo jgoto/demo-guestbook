@@ -18,10 +18,10 @@ async function getFeed(){
  * @description
  * Returns insert response on success.
  */
-async function createNewMessage(post){
+async function createNewMessage(userClient, post){
     /** Enforce posting limits here when functionality is available */
-    const data = await createMessage(post);
-    return data
+    const data = await createMessage(userClient ,post);
+    return data;
 }
 
 module.exports = {getFeed, createNewMessage};

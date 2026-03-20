@@ -35,7 +35,7 @@ async function routeCreateMessage(req, res){
         uuid: req.body.uuid
     }
     try {
-        const reply = await createNewMessage(post);
+        const reply = await createNewMessage(req.userClient, post);
         res.status(201).json(reply);
     } catch (error) {
         console.error(error);
