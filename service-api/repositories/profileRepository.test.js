@@ -10,7 +10,6 @@ jest.mock('../util/supabaseClient', ()=>({ //keep this until updateProfile is up
 }));
 
 const mockClient = {
-
     from: mockFrom
 }
 

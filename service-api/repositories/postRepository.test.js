@@ -7,6 +7,10 @@ jest.mock('../util/supabaseClient', () => ({
     supabase: {from: mockFrom},
 }));
 
+const mockClient = {
+    from: mockFrom
+}
+
 const { selectAllmessages, createMessage } = require('./postRepository');
 
 describe('selectAllMessages', (()=>{
@@ -35,7 +39,7 @@ test('createMessage sends a request to Supabase and recieves the inserted data',
     mockInsert.mockResolvedValue(mockReply);
     mockFrom.mockReturnValue({insert: mockInsert})
 
-    const result = await createMessage(post);
+    const result = await createMessage(mockClient, post);
     expect(result).toEqual(mockReply.data);
     expect(mockFrom).toHaveBeenCalledWith('messages');
     expect(mockInsert).toHaveBeenCalledWith(post);
@@ -55,5 +59,5 @@ test('postMessage records error and returns undefined when Supabase fails', asyn
     mockInsert.mockResolvedValue({data: null, error: new Error('Something went wrong')});
     mockFrom.mockReturnValue({insert: mockInsert});
     
-    await expect(createMessage(post)).rejects.toThrow('Something went wrong');
+    await expect(createMessage(mockClient, post)).rejects.toThrow('Something went wrong');
 })

@@ -74,7 +74,7 @@ export function ProfileProvider({children}){
         } 
     }
 
-    const value = {profile, avatar, loading, loadProfileData, editProfileForm, error};
+    const value = {profile, avatar, loading, setLoading, loadProfileData, editProfileForm, error};
 
     return (
         <ProfileContext.Provider value={value}>

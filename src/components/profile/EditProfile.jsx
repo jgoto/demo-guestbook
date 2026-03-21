@@ -1,5 +1,5 @@
 import { useState } from "react"
-export default function EditProfile({onSubmit, mergedData}){
+export default function EditProfile({onSubmit, mergedData, onCancel}){
     const [profileData, setProfileData] = useState({
         first_name: mergedData.first_name,
         last_name: mergedData.last_name,
@@ -37,6 +37,7 @@ export default function EditProfile({onSubmit, mergedData}){
                                         onChange={handleChange}
                                          /></label>
                 <button type = 'submit'>Submit</button>
+                <button onClick={onCancel}>Cancel</button>
             </form>
         </div>
     )
