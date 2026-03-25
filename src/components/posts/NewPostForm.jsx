@@ -15,7 +15,7 @@ export default function NewPostForm({user, comment, setComment}){
     return (
         
         <div>
-            <form onSubmit={handleSubmit}>
+            <form className={'message-form'} onSubmit={handleSubmit}>
                 <input type = "text" value={comment} onChange={(e)=>setComment(e.target.value)} placeholder="Write a message..."/>
                 <button type="submit">Send</button>
             </form>

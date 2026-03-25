@@ -19,7 +19,7 @@ function App() {
     <PostProvider>
     <ProfileProvider>
     <BrowserRouter>
-    <main>
+    <main className={"app-container"}>
       <h1>Demo Guestbook</h1>
       <Navigation />
       <Routes>

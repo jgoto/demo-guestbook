@@ -5,7 +5,7 @@ export default function Navigation(){
     const {loggedIn} = useAuth();
     return (
         <nav>
-            <ul>
+            <ul className={"nav"}>
                 <li><NavLink to='/' >Guestbook</NavLink></li>
                 {(loggedIn) && <li><NavLink to='/profile' >Profile</NavLink></li> }
                 {(loggedIn) && <li><NavLink to='/wordcloud' >wordcloud</NavLink></li> }

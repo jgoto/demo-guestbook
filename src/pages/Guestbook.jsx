@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useAuth } from '../hooks/AuthContext';
 import { usePosts } from '../hooks/PostContext';
 import NewPostForm from '../components/posts/NewPostForm';
+import PostCard from '../components/posts/PostCard';
 
 export default function Guestbook(){
     const {user, loggedIn} = useAuth();
@@ -15,10 +16,10 @@ export default function Guestbook(){
   return (
     <div>
       {(loggedIn) && <NewPostForm user = {user.user_id} comment = {comment} setComment = {setComment} /> }
-      <ul>
+      <div className={'message-list'}>
           {feed.map((post)=>(
-          <li key={post.id}>{post.content}</li>))}
-      </ul>
+          <PostCard key={post.id} data={post.content} />))}
+      </div>
       </div>
   )
 
