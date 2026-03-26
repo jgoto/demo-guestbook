@@ -1,4 +1,4 @@
-const {getFeed, createNewMessage} = require('../services/postServices');
+const {getFeed, getFeedWithAuthors, createNewMessage} = require('../services/postServices');
 
 /** routeGetFeed
  * Fetch all messages as a feed
@@ -13,6 +13,26 @@ const {getFeed, createNewMessage} = require('../services/postServices');
 async function routeGetFeed(req, res){
     try {
         const feed = await getFeed();
+        res.status(200).json(feed);        
+    } catch (error) {
+        console.error(error);
+        res.status(500).json;
+    }
+}
+
+/** routeGetFeed
+ * Fetch all messages as a feed with author data
+ * @param {import('express'.Request)} req - Express Request
+ * @param {import('express'.Response)} res - Express Response
+ * @returns {Promise<void>}
+ * @throws http 500 status if request to database fails
+ * @description
+ * return status 200 if request succeeds
+ * status 500 if there are errors.
+ */
+async function routeGetFeedWithAuthors(req, res){
+    try {
+        const feed = await getFeedWithAuthors();
         res.status(200).json(feed);        
     } catch (error) {
         console.error(error);
@@ -43,4 +63,4 @@ async function routeCreateMessage(req, res){
     }
 }
 
-module.exports = {routeGetFeed, routeCreateMessage};
+module.exports = {routeGetFeed, routeGetFeedWithAuthors, routeCreateMessage};

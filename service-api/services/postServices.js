@@ -1,4 +1,4 @@
-const {selectAllmessages, createMessage} = require('../repositories/postRepository');
+const {selectAllmessages, selectMessagesWithAuthors, createMessage} = require('../repositories/postRepository');
 
 /**
  * Fetches the message feed.
@@ -7,6 +7,15 @@ const {selectAllmessages, createMessage} = require('../repositories/postReposito
 async function getFeed(){
     const data = await selectAllmessages();    
         return data;
+}
+
+/**
+ * Fetches the message feed with Author data
+ * @returns {Promise<Array|undefined>}
+ */
+async function getFeedWithAuthors(){
+    const data = await selectMessagesWithAuthors();
+    return data;
 }
 
 /**
@@ -24,4 +33,4 @@ async function createNewMessage(userClient, post){
     return data;
 }
 
-module.exports = {getFeed, createNewMessage};
+module.exports = {getFeed, getFeedWithAuthors, createNewMessage};
