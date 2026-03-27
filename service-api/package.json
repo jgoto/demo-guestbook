@@ -26,6 +26,9 @@
     "jest-html-reporter": "^4.3.0"
   },
   "jest": {
+    "collectCoverage": true,
+    "coverageDirectory": "coverage",
+    "coverageReporters": ["text", "lcov"],
     "reporters": [
       "default",
       [
@@ -34,7 +37,8 @@
           "pageTitle": "Test Report",
           "outputPath": "test-report.html",
           "includeFailureMsg": true,
-          "includeConsoleLog": true
+          "includeConsoleLog": true,
+          "overwrite": true
         }
       ]
     ]

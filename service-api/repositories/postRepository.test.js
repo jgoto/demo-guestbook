@@ -34,14 +34,14 @@ describe('selectAllMessages', (()=>{
 
 test('selectMessagesWithAuthors returns feed data and author data and is ordered most recent first', async () => {
     const mockData = [{id: 1, text: 'Hello', profiles: {user_id: '123', first_name: 'Test', nickname: 'Tester'}}, {
-        id: 2, text: 'World!', profiles: {user_id: '456', first_name: 'User', nickname: 'User'}
+        id: 2, text: 'World!', profiles: {user_id: '456', first_name: 'User', nickname: ''}
     }]
 
     mockOrder.mockResolvedValue({ data: mockData});
     mockSelect.mockReturnValue({order: mockOrder});
     mockFrom.mockReturnValue({select: mockSelect});
 
-    const data = await selectAllmessages();
+    const data = await selectMessagesWithAuthors();
 
     expect(data).toEqual(mockData);
     expect(mockFrom).toHaveBeenCalledWith('messages');

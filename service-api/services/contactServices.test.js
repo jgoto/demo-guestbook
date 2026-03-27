@@ -19,9 +19,9 @@ describe('createContactMessage', (() => {
         const result = await createContactMessage(testContact);
         expect(result).toEqual(testContact);
     });
-    test('Reject as likely spam if the honeypot field contains data', () => {
+    test('Reject as likely spam if the honeypot field contains data', async () => {
         try {
-            const result = createContactMessage({...testContact, honeypot: 'spam'});            
+            const result = await createContactMessage({...testContact, honeypot: 'spam'});            
         } catch (error) {
             expect(error).toBeInstanceOf(AppError);
             expect(error.status).toBe(400);
