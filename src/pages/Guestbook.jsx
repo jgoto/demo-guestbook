@@ -18,7 +18,9 @@ export default function Guestbook(){
       {(loggedIn) && <NewPostForm user = {user.user_id} comment = {comment} setComment = {setComment} /> }
       <div className={'message-list'}>
           {feed.map((post)=>(
-          <PostCard key={post.id} data={{display_name: post.profiles.display_name, content: post.content}} />))}
+          <PostCard key={post.id} data={{display_name: post.profiles.display_name, 
+                                          content: post.content,
+                                          user_id: post.profiles.user_id}} />))}
       </div>
       </div>
   )

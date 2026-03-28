@@ -1,3 +1,5 @@
+const {supabase} = require('../util/supabaseClient');
+
 /**
  * Generates a signed URL for a user's avatar in the Supabase storage bucket.
  *
@@ -12,13 +14,12 @@
  * ├── 123/
  * │   └── 123.png
  *
- * @param {string} user_id - ID of the user requesting the avatar
- * @param {import('@supabase/supabase-js').SupabaseClient} userClient - Supabase client scoped to the user
+ * @param {string} user_id - ID for the user owning the avatar
  * @returns {Promise<{ signedUrl: string } | null>}
  */
-async function selectAvatarSignedUrl(user_id, userClient){
+async function selectAvatarSignedUrl(user_id){
     try {
-        const {data} = await userClient.storage.from('avatars')
+        const {data} = await supabase.storage.from('avatars')
             .createSignedUrl(`${user_id}/${user_id}.png`, 172800);
         return data;
     } catch (error) {

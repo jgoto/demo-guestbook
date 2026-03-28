@@ -28,6 +28,21 @@ export function PostProvider({children}){
         }        
     }
 
+    const fetchPostAvatar = async (user_id) => {
+        try {
+            const response = await fetch(`http://localhost:${import.meta.env.VITE_PORT}/api/avatar/view/${user_id}`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+            const results = await response.json();
+            return results.signedUrl;
+        } catch (error) {
+            console.error(`Something went wrong: ${error.message}`);
+        }
+    }
+
     const submitNewPost = async (newComment, userId) => {
         try {
             if(!newComment.trim()) 
@@ -64,7 +79,7 @@ export function PostProvider({children}){
         fetchFeed();
     }, [])
 
-    const value = {feed, loading, error, submitNewPost}
+    const value = {feed, loading, error, submitNewPost, fetchPostAvatar}
 
     return (
         <PostContext.Provider value = {value}>

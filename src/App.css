@@ -94,7 +94,9 @@ h1 {
 .message-list {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 1rem;
+  max-width: 600px;
+  margin: 2rem auto;
 }
 
 .post-card {
@@ -109,4 +111,25 @@ h1 {
   transform: translateY(-2px);
   transition: 0.15s ease;
   box-shadow: 0 6px 14px rgba(0,0,0,0.08);
+}
+
+.post-card h4 {
+  margin: 0 0 0.5rem 0;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #333;
+}
+
+.post-card p{
+  margin: 0.25rem 0 0.5rem 0;
+  font-size: 0.95rem;
+  color: #555;
+}
+
+.post-card img {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #ddd;
 }

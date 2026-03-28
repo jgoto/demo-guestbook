@@ -1,10 +1,10 @@
 const mockCreateSignedUrl = jest.fn();
 const mockFrom = jest.fn();
-const mockClient = {
-    storage: {
-        from: mockFrom
+jest.mock('../util/supabaseClient', () => ({
+    supabase: {
+        storage: {from: mockFrom}
     }
-}
+}));
 
 const {selectAvatarSignedUrl} = require('./avatarRepository');
 
@@ -18,7 +18,7 @@ describe('selectAvatarSignedUrl', (() => {
         mockFrom.mockReturnValue({createSignedUrl: mockCreateSignedUrl});
         mockCreateSignedUrl.mockResolvedValue({data: testData});
 
-        result = await selectAvatarSignedUrl('abc', mockClient)
+        result = await selectAvatarSignedUrl('abc')
         expect(result).toEqual(testData);
         expect(mockFrom).toHaveBeenCalledWith('avatars');
         expect(mockCreateSignedUrl).toHaveBeenCalled();
@@ -27,7 +27,7 @@ describe('selectAvatarSignedUrl', (() => {
     test('On failure return an error', async ()=>{
         const consoleSpy = jest.spyOn(console, 'error').mockImplementation();
         mockCreateSignedUrl.mockRejectedValue(new Error('DB Error'));
-        const result = await selectAvatarSignedUrl('abc', mockClient);
+        const result = await selectAvatarSignedUrl('abc');
 
         expect(consoleSpy).toHaveBeenCalled();
         consoleSpy.mockRestore();

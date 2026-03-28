@@ -3,6 +3,6 @@ const router = express.Router();
 const {routeGetAvatar} = require('../controllers/avatarController');
 const {verifyToken} = require('../middleware/verifyToken');
 
-router.get('/view/:userId', verifyToken, routeGetAvatar);
+router.get('/view/:userId', routeGetAvatar);
 
 module.exports = router;

@@ -20,7 +20,6 @@ async function getFeedWithAuthors(){
     if(!data)
         throw new Error("Something went wrong");
     const normalizedData =normalizePosts(data);
-    console.log(normalizedData);
     return normalizedData;
 }
 

@@ -10,7 +10,7 @@ const {viewAvatar} = require('../services/avatarServices');
 async function routeGetAvatar(req, res){
     const userId = req.params.userId;
     try {
-        const avatar = await viewAvatar(userId, req.userClient);
+        const avatar = await viewAvatar(userId);
         res.status(200).json(avatar);
     } catch (error) {
         if(error instanceof AppError)        

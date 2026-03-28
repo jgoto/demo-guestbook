@@ -11,8 +11,7 @@ describe('routeGetAvatar', (() => {
     const req = {
         params: {
             userId: 'abc'
-        },
-        userClient: {}        
+        }  
     }
     const res = {
         status: jest.fn().mockReturnThis(),
@@ -26,7 +25,7 @@ describe('routeGetAvatar', (() => {
     test('recieve signed url and updates res data as json and set http status to 200', async () => {
         viewAvatar.mockResolvedValue({data: testData});
         const result = await routeGetAvatar(req, res);
-        expect(viewAvatar).toHaveBeenCalledWith('abc', {});
+        expect(viewAvatar).toHaveBeenCalledWith('abc');
         expect(res.status).toHaveBeenCalledWith(200);
         expect(res.json).toHaveBeenCalledWith({data: testData});        
     });

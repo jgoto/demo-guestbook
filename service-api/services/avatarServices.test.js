@@ -3,7 +3,7 @@ const { AppError } = require('../errors/AppError');
 jest.mock('../repositories/avatarRepository', () => ({
     selectAvatarSignedUrl: jest.fn()
 }))
-const userClient = {};
+
 const userId = 'abc'
 
 const { selectAvatarSignedUrl } = require('../repositories/avatarRepository');
@@ -13,9 +13,9 @@ describe('selectAvatarSignedUrl', (() => {
 
     test('recieve signed url on success', async () => {
         selectAvatarSignedUrl.mockResolvedValue(testData);
-        const result = await selectAvatarSignedUrl(userId, userClient);
+        const result = await selectAvatarSignedUrl(userId);
 
         expect(result).toEqual(testData);
-        expect(selectAvatarSignedUrl).toHaveBeenCalledWith('abc', {});
+        expect(selectAvatarSignedUrl).toHaveBeenCalledWith('abc');
     })
 }))
