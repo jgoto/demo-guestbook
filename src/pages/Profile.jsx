@@ -28,7 +28,6 @@ export default function Profile(){
     const mergedData = {...profile, ...avatar, email: user.email};
     return (
         <div>
-            <p>Profile</p>
             {isEditing 
                 ? <EditProfile onSubmit={handleSubmit} mergedData={mergedData} onCancel={toggleEditing} /> 
                 : <DisplayProfile mergedData={mergedData} onEdit={toggleEditing} />

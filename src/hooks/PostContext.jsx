@@ -44,6 +44,7 @@ export function PostProvider({children}){
     }
 
     const submitNewPost = async (newComment, userId) => {
+        console.log(`Initiating new post for ${userId}: ${newComment}`)
         try {
             if(!newComment.trim()) 
             {

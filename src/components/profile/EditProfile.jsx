@@ -21,23 +21,32 @@ export default function EditProfile({onSubmit, mergedData, onCancel}){
     return (
         <div>
             <form className="edit_profile_form" onSubmit={handleSubmit}>
-                <label>First Name: <input type="text"
-                                        name = "first_name"
-                                        value = {profileData.first_name}
-                                        onChange={handleChange}
-                                         /></label>
-                <label>Last Name: <input type="text"
-                                        name = "last_name"
-                                        value = {profileData.last_name}
-                                        onChange={handleChange}
-                                         /></label>
-                <label>Nickname: <input type="text"
-                                        name = "nickname"
-                                        value = {profileData.nickname}
-                                        onChange={handleChange}
-                                         /></label>
-                <button type = 'submit'>Submit</button>
-                <button onClick={onCancel}>Cancel</button>
+                <div className="profile-form-group">
+                    <label>First Name: </label>
+                    <input 
+                        type="text" 
+                        name = "first_name" 
+                        value = {profileData.first_name} 
+                        onChange={handleChange}/>
+                </div>
+                <div className="profile-form-group">
+                    <label>Last Name: </label>
+                    <input type="text"
+                        name = "last_name"
+                        value = {profileData.last_name}
+                        onChange={handleChange} />
+                </div>
+                <div className="profile-form-group">
+                    <label>Nickname: </label>
+                    <input type="text"
+                        name = "nickname"
+                        value = {profileData.nickname}
+                        onChange={handleChange} />
+                </div>
+                <div className="profile-form-actions">
+                    <button type = 'submit'>Submit</button>
+                    <button onClick={onCancel}>Cancel</button>
+                </div>
             </form>
         </div>
     )

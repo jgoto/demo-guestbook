@@ -4,13 +4,15 @@ import { NavLink } from "react-router-dom";
 export default function LogoutBtn(){
     const {logout, loggedIn} = useAuth();
     function handleLogout(){
-        logout();
+        if(window.confirm("Are you sure you want to log out?")){
+            logout();
+        }
     }
 
     return (
-        <div>
-            <button type="submit" onClick={handleLogout}>Logout</button>
-            {(loggedIn) && <li><NavLink to='/changepassword' >Change your password</NavLink></li> }
+        <div className="logout-actons">
+            <button className='logout-btn' type="submit" onClick={handleLogout}>Logout</button>
+            {(loggedIn) && <h4><NavLink to='/changepassword' className='change-password-link'>Change your password</NavLink></h4> }
         </div>
     )
 }

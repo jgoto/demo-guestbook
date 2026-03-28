@@ -8,7 +8,8 @@ export default function Navigation(){
             <ul className={"nav"}>
                 <li><NavLink to='/' >Guestbook</NavLink></li>
                 {(loggedIn) && <li><NavLink to='/profile' >Profile</NavLink></li> }
-                {(loggedIn) && <li><NavLink to='/wordcloud' >wordcloud</NavLink></li> }
+                {/*  ---- Uncomment when wordcloud is implemented
+                {(loggedIn) && <li><NavLink to='/wordcloud' >wordcloud</NavLink></li> }*/}
                 <li><NavLink to='/contact' >Contact</NavLink></li>
                 <li><NavLink to='/login' >Login</NavLink></li>                
             </ul>

@@ -48,7 +48,7 @@ async function selectAllmessages(){
  * // ]
  */
 async function selectMessagesWithAuthors(){
-    const {data, error} = await supabase.from('messages').select('*, profiles!inner(user_id, first_name, nickname)').order('created_at', {ascending: false});
+    const {data, error} = await supabase.from('messages').select('*, profiles!messages_user_fk(user_id, first_name, nickname)').order('created_at', {ascending: false});
     if(error)
         throw error;
     return data;
@@ -65,7 +65,10 @@ async function selectMessagesWithAuthors(){
  * Logs an error and returns undefined on failure.
  */
 async function createMessage(userClient, post){
-    const {data, error} = await userClient.from('messages').insert(post);
+    const {data, error} = await userClient.from('messages').insert({
+        content: post.content,
+        user_id: post.user_id
+    });
     if(error)
         throw error;
     return data;

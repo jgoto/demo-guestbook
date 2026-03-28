@@ -5,6 +5,7 @@ export default function NewPostForm({user, comment, setComment}){
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
+            console.log('submitting new post ' + comment);
             const response = await submitNewPost(comment, user);
             setComment('');
         } catch (error) {

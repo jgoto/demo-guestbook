@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useAuth } from '../hooks/AuthContext';
+import { useProfile } from '../hooks/ProfileContext';
 import { usePosts } from '../hooks/PostContext';
 import NewPostForm from '../components/posts/NewPostForm';
 import PostCard from '../components/posts/PostCard';
@@ -7,6 +8,7 @@ import PostCard from '../components/posts/PostCard';
 export default function Guestbook(){
     const {user, loggedIn} = useAuth();
     const {loading, feed} = usePosts();
+    const {profile} = useProfile();
     const [comment, setComment] = useState("");
 
   if(loading){

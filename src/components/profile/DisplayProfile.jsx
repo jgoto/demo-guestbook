@@ -1,15 +1,34 @@
 import Avatar from "./Avatar"
 export default function DisplayProfile({mergedData, onEdit}){
     return (
-    <div>
-        <Avatar src={mergedData.signedUrl} size={"md"} alt={mergedData.nickname} />
+    <div className={'profile-display-container'}>
+        <h3 className={'profile-display-title'}>{`${mergedData.first_name || ''} ${mergedData.last_name}`}</h3>
+        <div className={'profile-display-card'}>
+            <div className={'profile-avatar-container'}>
+                <Avatar src={mergedData.signedUrl} size={"md"} alt={mergedData.nickname} />
+            </div>
+            <div className={'profile-details-container'}>
+                <ul className={'profile-details-list'}>
+                    <li>
+                        <span className="profile-detail-label">First Name: </span>
+                        <span className="profile-detail-value">{mergedData.first_name}</span>
+                    </li>
+                    <li>
+                        <span className="profile-detail-label">Last Name: </span>
+                        <span className="profile-detail-value">{mergedData.last_name}</span>
+                    </li>
+                    <li>
+                        <span className="profile-detail-label">Nickname: </span>
+                        <span className="profile-detail-value">{mergedData.nickname}</span>
+                    </li>
+                    <li>
+                        <span className="profile-detail-label">Email: </span>
+                        <span className="profile-detail-value">{mergedData.email}</span>
+                    </li>
+                </ul>
+            </div>            
+        </div>
         <button onClick={onEdit}>Edit</button>
-        <ul>
-            <li>{`first_name: ${mergedData.first_name}`}</li>
-            <li>{`last_name: ${mergedData.last_name}`}</li>
-            <li>{`nickname: ${mergedData.nickname}`}</li>
-            <li>{`email: ${mergedData.email}`}</li>
-        </ul>
     </div>
     )
 }

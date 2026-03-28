@@ -52,7 +52,7 @@ async function routeGetFeedWithAuthors(req, res){
 async function routeCreateMessage(req, res){
     const post = {
         content: req.body.content,
-        uuid: req.body.uuid
+        user_id: req.body.uuid
     }
     try {
         const reply = await createNewMessage(req.userClient, post);

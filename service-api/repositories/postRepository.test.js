@@ -50,7 +50,7 @@ test('selectMessagesWithAuthors returns feed data and author data and is ordered
 })
 
 test('createMessage sends a request to Supabase and recieves the inserted data', async () => {
-    const post = {text: 'new post'};
+    const post = {content: 'new post', user_id: 'qwerty'};
     const mockReply = { data: [{ id: 1, ...post }]};
 
     mockInsert.mockResolvedValue(mockReply);

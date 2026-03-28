@@ -7,7 +7,7 @@ export default function Login(){
     const {loggedIn, loginMsg} = useAuth();
     return (
         <div>
-            <h1>Login</h1>
+            <h3 className="login-title">Login</h3>
             {
                 (!loggedIn) ? <LoginForm /> : <LogoutBtn />                              
             }

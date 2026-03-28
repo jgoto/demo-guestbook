@@ -36,9 +36,13 @@ export default function PostCard({data}){
 
     return (
         <div className={'post-card'}>
-            <h4>{data.content}</h4>
-            <p>{data.display_name}</p>
-            <Avatar src={avatarSignedUrl || 'profile00.png'} size={"sm"} alt={`${data.display_name} avatar`} />
+            <div className={'card-avatar-container'}>
+                <Avatar src={avatarSignedUrl || 'profile00.png'} size={"sm"} alt={`${data.display_name} avatar`} />
+            </div>
+            <div className={'card-detail-container'}>
+                <h4>{data.content}</h4>
+                <p>{data.display_name}</p>
+            </div> 
         </div>
     )
 }
