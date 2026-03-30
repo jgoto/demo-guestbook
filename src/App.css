@@ -397,3 +397,52 @@ h1 {
   background-color: #3b55d1;
   transform: translateY(-1px);
 }
+
+.public-contact-form,
+.public-form-container {
+  display: flex;
+  justify-content: center;
+  padding: 2rem 1rem;
+}
+
+.contact-form-group{
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 1rem;
+}
+
+.contact-form-group input,
+.contact-form-group textarea {
+  padding: 0.6rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  transition: border 0.2s, box-shadow 0.2s;
+}
+
+.contact-form-group textarea{
+  min-height: 120px;
+  resize: vertical;
+  font-family: inherit;
+}
+
+.contact-action {
+  margin-top: 1rem;
+}
+
+.contact-actions button {
+  width: 100%;
+  padding: 0.65rem;
+  border: none;
+  border-radius: 8px;
+  background-color: #4f6ef7;
+  color: white;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.1s;
+}
+
+.contact-actions button:hover {
+  background-color: #3b55d1;
+  transform: translateY(-1px);
+}

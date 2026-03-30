@@ -27,17 +27,23 @@ export default function PublicContactForm({onSubmit}){
     }
 
     return (
-        <div className={"public_contact_form"}>
-            <form onSubmit={handleSubmit}>
-                <label>Name<input type = "text" 
-                                name="name" 
-                                value = {contact.name} 
-                                onChange={handleChange} required /></label>
-                <label>Email<input type = "email" 
-                                name="email" 
-                                value = {contact.email} 
-                                onChange={handleChange} required /></label>
-                <div className={'company'} style={{
+        <div className={"public-contact-form"}>
+            <form className='contact-form' onSubmit={handleSubmit}>
+                <div className={'contact-form-group'}>
+                    <label>Name</label>
+                    <input type = "text" 
+                        name="name" 
+                        value = {contact.name} 
+                        onChange={handleChange} required />                    
+                </div>
+                <div className={'contact-form-group'}>
+                    <label>Email</label>
+                    <input type = "email" 
+                        name="email" 
+                        value = {contact.email} 
+                        onChange={handleChange} required />                    
+                </div>
+                <div className={'contact-form-group company'} style={{
                     position: 'absolute',
                     width: '1px',
                     height: '1px',
@@ -46,23 +52,33 @@ export default function PublicContactForm({onSubmit}){
                     overflow: 'hidden',
                     clip: 'rect(0, 0, 0, 0)',
                     whiteSpace: 'nowrap',
-                    border: 0 }}> 
-                    <label>Company<input type = "text" 
-                                name="company" 
-                                value = {contact.company} 
-                                onChange={handleChange}
-                                autoComplete="off"
-                                tabIndex="-1" /></label>
+                    border: 0 }}>
+                    <label>Company</label>
+                    <input type = "text" 
+                        name="company" 
+                        value = {contact.company} 
+                        onChange={handleChange}
+                        autoComplete="off"
+                        tabIndex="-1" />
+                    
                 </div>
-                <label>Subject<input type = "text" 
-                                name="subject" 
-                                value = {contact.subject} 
-                                onChange={handleChange} required /></label>
-                <label>Message<textarea
-                                name="message" 
-                                value={contact.message} 
-                                onChange={handleChange} required /></label>
-                <button type="submit">Submit</button>
+                <div className={'contact-form-group'}>
+                    <label>Subject</label>
+                    <input type = "text" 
+                        name="subject" 
+                        value = {contact.subject} 
+                        onChange={handleChange} required />
+                </div>
+                <div className={'contact-form-group'}>
+                    <label>Message</label>
+                    <textarea
+                        name="message" 
+                        value={contact.message} 
+                        onChange={handleChange} required />
+                </div>
+                <div className={'contact-actions'}>
+                    <button type="submit">Submit</button>
+                </div>                
             </form>
         </div>
     )

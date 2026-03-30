@@ -1,8 +1,26 @@
-# React + Vite
+# Demo Guestbook
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Features
+- Third-party authentication via Supabase
+- Form submission and validation
+- Data creation and retrieval
+- HTTP backend API
+- React-based frontend presentation
+- Automated testing pipeline
 
-Currently, two official plugins are available:
+## Objective
+The objective of this project is to create a robust, production-style web application that reflects real-world architecture and serves as a solid foundation for implementing industry-standard automated testing methodologies.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Tech Stack
+- React
+- Node.js
+- Express
+- Supabase
+- PostgreSQL
+- JavaScript
+
+## Testing
+- End-to-end testing through Playwright (**planned**)
+- API integration testing through Postman (**in progress**)
+- Database integration testing with Jest
+- Backend unit testing with Jest
