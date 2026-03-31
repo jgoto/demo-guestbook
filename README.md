@@ -24,3 +24,21 @@ The objective of this project is to create a robust, production-style web applic
 - API integration testing through Postman (**in progress**)
 - Database integration testing with Jest
 - Backend unit testing with Jest
+
+### API Testing - Postman
+A Postman collection for manual and integration API testing is included in this repository.
+
+Location:
+`/postman/guestbook-api.postman_collection.json`
+
+Import this collection into Postman to test:
+- authentication flows
+- protected routes
+- message creation
+- data retrieval
+
+## Installation
+- copy project from github
+- example .env
+- setup supabase
+- run 
