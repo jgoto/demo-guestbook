@@ -12,13 +12,13 @@ export default function Guestbook(){
     const [comment, setComment] = useState("");
 
   if(loading){
-    return(<p>Loading Feed...</p>)
+    return(<p data-testid='loading-text'>Loading Feed...</p>)
   }
 
   return (
     <div>
       {(loggedIn) && <NewPostForm user = {user.user_id} comment = {comment} setComment = {setComment} /> }
-      <div className={'message-list'}>
+      <div className='message-list' data-testid='message-feed'>
           {feed.map((post)=>(
           <PostCard key={post.id} data={{display_name: post.profiles.display_name, 
                                           content: post.content,
