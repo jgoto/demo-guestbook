@@ -10,6 +10,14 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
+    env: 
+      VITE_SUPABASE_URL: ${{secrets.SUPABASE_URL}}
+      VITE_SUPABASE_PUBLIC_KEY: ${{secrets.SUPABASE_ANON_KEY}}
+      VITE_PORT: ${{secrets.PORT}}
+      SUPABASE_URL: ${{secrets.SUPABASE_URL}}
+      SUPABASE_ANON_KEY: ${{secrets.SUPABASE_ANON_KEY}}
+      SUPABASE_SERVICE_KEY: ${{secrets.SUPABASE_SERVICE_KEY}}
+      PORT: ${{secrets.PORT}}
     steps:
     - name: Checkout repository
       uses: actions/checkout@v4
