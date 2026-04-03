@@ -22,15 +22,17 @@ export default function LoginForm(){
         <div className='login-container'>
             <form onSubmit={handleLogin} className='login-form'>
                 <div className = 'login-form-group'>
-                    <label>Username: </label>
-                    <input type = "email"                         
+                    <label htmlFor="email" >Username: </label>
+                    <input type = "email"
+                        id='login-email'                         
                         placeholder = "Enter Email" 
                         value = {email} 
                         onChange={e=>setEmail(e.target.value)} required />
                 </div>
                 <div className="login-form-group">
-                    <label>Password: </label>
-                    <input type = "password" 
+                    <label htmlFor="password">Password: </label>
+                    <input type = "password"
+                        id="login-password" 
                         placeholder = "Enter Password" 
                         value = {password} 
                         onChange={e=>setPassword(e.target.value)} required />
