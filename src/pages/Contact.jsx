@@ -23,7 +23,7 @@ export default function Contact(){
     }
 
     if(submitted)
-        return(<p>{msg}</p>)
+        return(<p data-testid='submit-msg'>{msg}</p>)
 
     return (
         <div>

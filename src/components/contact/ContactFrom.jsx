@@ -23,19 +23,21 @@ export default function ContactForm({email, name, onSubmit}){
     }
 
     return (
-        <div className="contact-form-container">
+        <div className="contact-form-container" data-testid="simple-contact-form">
             <form className='contact-form' onSubmit={handleSubmit}>
                 <div className={'contact-form-group'}>
-                    <label>Subject</label>
+                    <label htmlFor="simple-subject">Subject</label>
                     <input type = "text" 
                         name="subject" 
+                        id="simple-subject"
                         value = {contact.subject} 
                         onChange={handleChange} required />
                 </div>
                 <div className={'contact-form-group'}>
-                    <label>Message</label>
+                    <label htmlFor="simple-message">Message</label>
                     <textarea
                         name="message" 
+                        id="simple-message"
                         value={contact.message} 
                         onChange={handleChange} required />
                 </div>
