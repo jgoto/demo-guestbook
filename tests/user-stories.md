@@ -2,7 +2,7 @@
 
 | ID | Test File Name | As | I want | So that | Acceptance Criteria | Journey / Flow | Status |
 |---|---|---|---|---|---|---|---|
-| 1 | `guest-read-posts-home.spec.js` | Guest | To read posts on the home page | I can view posts from other users | The post list loads correctly on the home page | Open home → View post list → Assert post text is visible | Incomplete |
+| 1 | `guest-read-posts-home.spec.js` | Guest | To read posts on the home page | I can view posts from other users | The post list loads correctly on the home page | Open home → View post list → Assert post text is visible | Complete |
 | 2 | `user-can-create-posts.spec.js` | User | To create a new post on the home page | my post is placed on the home feed | The new post displays on the home page | Open home → Type in a new post -> click send → Assert new post is visible in the feed | Incomplete |
 | 3 | `guest-cannot-create-posts.spec.js` | Guest | To be restricted from making posts | Unverified users cannot create posts | No option is presented to guests for creating new posts | Open home → Assert New Post form is hidden | Complete |
 | 4 | `guest-contact-admin-full-form.spec.js` | Guest | To contact the site administrator | I can ask questions or request assistance | The full contact form is presented. Clicking Submit hides the form and displays a thank-you message | Open contact → Fill in form fields → Click Submit → Assert thank-you message | Incomplete |
