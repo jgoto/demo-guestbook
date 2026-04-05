@@ -18,6 +18,8 @@ jobs:
       SUPABASE_ANON_KEY: ${{secrets.SUPABASE_ANON_KEY}}
       SUPABASE_SERVICE_KEY: ${{secrets.SUPABASE_SERVICE_KEY}}
       PORT: ${{secrets.PORT}}
+      TEST_USER_EMAIL: ${{secrets.TEST_USER_EMAIL}}
+      TEST_USER_PW: ${{secrets.TEST_USER_PW}}
     steps:
     - name: Checkout repository
       uses: actions/checkout@v4
