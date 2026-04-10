@@ -9,8 +9,8 @@ class ContactPage{
         this.messageInput = page.getByLabel('Message');
                 
         this.simpleContactForm = page.getByTestId('simple-contact-form');
-        this.simpleSubject = page.getByLabel('simple-subject');
-        this.simpleMessage = page.getByLabel('simple-message');
+        this.simpleSubject = page.getByLabel('Subject');
+        this.simpleMessage = page.getByLabel('Message');
 
         this.submitBtn = page.getByRole('button', {name: 'submit'});
         this.submitMsg = page.getByTestId('submit-msg');
@@ -25,6 +25,12 @@ class ContactPage{
         await this.emailInput.fill(email);
         await this.subjectInput.fill(subject);
         await this.messageInput.fill(message);
+        await this.submitBtn.click();
+    }
+
+    async submitSimpleContact(subject, message){
+        await this.simpleSubject.fill(subject);
+        await this.simpleMessage.fill(message);
         await this.submitBtn.click();
     }
 }
