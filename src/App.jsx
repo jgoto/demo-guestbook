@@ -7,35 +7,38 @@ import Wordcloud from './pages/Wordcloud'
 import PasswordChange from './pages/PasswordChange'
 import Navigation from './components/layout/Navigation'
 import ProtectedRoute from './components/ProtectedRoute'
-import {AuthProvider} from './hooks/AuthContext'
-import { PostProvider } from './hooks/PostContext'
 import { Route, BrowserRouter, Routes } from 'react-router-dom'
-import { ProfileProvider } from './hooks/ProfileContext'
+import { Providers } from './hooks/Providers'
 
 function App() {
   
   return (
-    <AuthProvider>
-    <PostProvider>
-    <ProfileProvider>
-    <BrowserRouter>
-    <main className={"app-container"}>
-      <h1>Demo Guestbook</h1>
-      <Navigation />
-      <Routes>
-        <Route path='/' element={<Guestbook />} />
-        <Route path = '/profile' element = {<Profile />} />
-        <Route path = '/login' element = {<Login />} />
-        <Route path = '/contact' element = {<Contact />} />
-        <Route path = '/wordcloud' element = {<Wordcloud />} />
-        <Route path = '/changepassword' element = {<ProtectedRoute><PasswordChange /></ProtectedRoute>} />
-      </Routes>
-    </main>        
-    </BrowserRouter>
-    </ProfileProvider>
-    </PostProvider>
-    </AuthProvider>
+  <BrowserRouter>
+    <Providers>
+      <AppContent />
+    </Providers>
+  </BrowserRouter>
   )
+}
+
+function AppContent(){
+  
+  return(
+  <main className={"app-container"}>
+    <h1>Demo Guestbook</h1>
+    <Navigation />
+    <Routes>
+      <Route path='/' element={<Guestbook />} />
+      <Route path = '/profile' element = {<Profile />} />
+      <Route path = '/login' element = {<Login />} />
+      <Route path = '/contact' element = {<Contact />} />
+      <Route path = '/wordcloud' element = {<Wordcloud />} />
+      <Route path = '/changepassword' element = {<ProtectedRoute><PasswordChange /></ProtectedRoute>} />
+    </Routes>
+  </main>        
+  )
+  
+    
 }
 
 export default App

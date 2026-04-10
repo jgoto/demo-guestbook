@@ -1,4 +1,4 @@
-import { useContext, createContext, useState, useEffect } from "react";
+import { useContext, createContext, useState, useEffect, useCallback, useMemo } from "react";
 import  reactSupabase from "../supabaseClient";
 
 const AuthContext = createContext();
@@ -8,24 +8,39 @@ export function AuthProvider({children}){
     const [loggedIn, setLoggedIn] = useState(false);
     const [loginMsg, setLoginMsg] = useState("");
     const [userSession, setUserSession] = useState(null);
+    const [authLoaded, setAuthLoaded] = useState(false);
 
     useEffect(()=>{
-        checkSession();
+        checkSession().then(() => {
+            console.log("Session Checked")
+            setAuthLoaded(true)
+        }).catch(() => {
+            setAuthLoaded(true)
+        });
 
         const {data: listener} = reactSupabase.auth.onAuthStateChange((_event, session) => {
+            console.log("session data being saved")
             setUserSession(session);
             setUser(session?.user ? {user_id: session.user.id, email: session.user.email} : null);
             setLoggedIn(!!session);
+            setAuthLoaded(true);
+            console.log(`Setting Authloaded to ${authLoaded}`);
         });
 
         return () => listener.subscription.unsubscribe();
     },[])
+
+    const reloadAuth = useCallback(() => {
+        setAuthLoaded(false);
+        checkSession();
+    }, []);
 
     const checkSession = async () =>  {
         const {data} = await reactSupabase.auth.getSession();
         const s = data.session;
         setUserSession(s);
         setUser(s?.user ? {user_id: s.user.id, email: s.user.email} : null);
+        console.log(user)
         setLoggedIn(!!s);
     }
 
@@ -75,8 +90,13 @@ export function AuthProvider({children}){
         return {success: true};
     }
 
+    const value = useMemo(() => ({
+        setUserState, logout, authenticate, requestPwChange, user, loggedIn, loginMsg, 
+        userSession, authLoaded, reloadAuth
+    }), [setUserState, logout, authenticate, requestPwChange, user, loggedIn, loginMsg, userSession, authLoaded,reloadAuth]);
+
     return (
-        <AuthContext.Provider value={{setUserState, logout, authenticate, requestPwChange, user, loggedIn, loginMsg, userSession}}>
+        <AuthContext.Provider value={value}>
             {children}
         </AuthContext.Provider>
     )
