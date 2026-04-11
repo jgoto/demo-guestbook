@@ -18,21 +18,39 @@ export function AuthProvider({children}){
             setAuthLoaded(true)
         });
 
+        let mounted = true;
+        const initAuth = async () => {
+            try {
+                const {data} = await reactSupabase.auth.getSession();
+                const session = data.session;
+                if(!mounted) return;
+                setUserSession(session);
+                setUser(session?.user ? {
+                    user_id: session.user.id, email: session.user.email
+                } : null);
+                setLoggedIn(!!session);
+            } catch (error) {
+                console.error("Session init failed", error);
+            } finally {
+                if(mounted){
+                    setAuthLoaded(true);
+                }
+            }
+            initAuth();
+        }
+
         const {data: listener} = reactSupabase.auth.onAuthStateChange((_event, session) => {
             console.log("session data being saved")
             setUserSession(session);
             setUser(session?.user ? {user_id: session.user.id, email: session.user.email} : null);
-            setLoggedIn(!!session);
-            setAuthLoaded(true);
-            console.log(`Setting Authloaded to ${authLoaded}`);
+            setLoggedIn(!!session);            
         });
 
         return () => listener.subscription.unsubscribe();
     },[])
 
-    const reloadAuth = useCallback(() => {
-        setAuthLoaded(false);
-        checkSession();
+    const reloadAuth = useCallback(async () => {
+        await checkSession();
     }, []);
 
     const checkSession = async () =>  {
@@ -40,7 +58,6 @@ export function AuthProvider({children}){
         const s = data.session;
         setUserSession(s);
         setUser(s?.user ? {user_id: s.user.id, email: s.user.email} : null);
-        console.log(user)
         setLoggedIn(!!s);
     }
 
