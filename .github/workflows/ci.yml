@@ -45,6 +45,10 @@ jobs:
       run: npm test
       working-directory: ./service-api
     
-    - name: Run frontend tests (playwright)
+    - name: Run frontend Integration tests (Vitest)
+      run: npm run test:integration
+      working-directory: ./
+    
+    - name: Run frontend E2E tests (playwright)
       run: npm run test:e2e
       working-directory: ./
