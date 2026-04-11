@@ -12,7 +12,7 @@ export default function Login(){
                 (!loggedIn) ? <LoginForm /> : <LogoutBtn />                              
             }
             {
-                (loginMsg!=="") && <p>{loginMsg}</p>
+                (loginMsg!=="") && <p data-testid="login-page-msg">{loginMsg}</p>
             }
         </div>
     )

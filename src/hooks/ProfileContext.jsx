@@ -9,6 +9,7 @@ export function ProfileProvider({children}){
     const [profile, setProfile] = useState(null);
     const [avatar, setAvatar] = useState(null);
     const [loading, setLoading] = useState(true);
+    const [mounted, setMounted] = useState(true);
     const [profileLoaded, setProfileLoaded] = useState(false);
     const [error, setError] = useState(null);
 
@@ -17,24 +18,30 @@ export function ProfileProvider({children}){
 }, [loadProfileData]);
 
     useEffect(()=>{
-        console.log('Profile updating');
-        if(!authLoaded) return;
-        if(!user?.user_id){
-            setProfile(null);
-            setProfileLoaded(true);
-        }
-        
+        const load = async () => {
+            console.log('Profile updating');
+            if(!authLoaded) return;
+            if(!user?.user_id || !token){
+                if(!mounted) return;
+                console.log("user not logged in. Setting profile as loaded anyways");
+                setProfile(null);
+                setAvatar(null);
+                setProfileLoaded(true);
+                setLoading(false);
+            }
+
+            load();
+            return ()=>{
+                setMounted(false);
+            }
+        }       
         console.log("Attempting to load profile data");
         loadProfileData();
     },[authLoaded, user?.user_id])
 
     async function loadProfileData(){
-        if(!token){            
-            setLoading(true);
-            console.log(`no token. Set loading to ${loading}`);
-            return;
-        }
         try {
+            console.log("Getting profile and avatar data from DB");
             const [profileRes, avatarRes] = await Promise.all([
                 fetch(`http://localhost:${import.meta.env.VITE_PORT}/api/profile/view/${user.user_id}`, {
                     method: 'GET',
@@ -55,13 +62,23 @@ export function ProfileProvider({children}){
                 throw new Error("Profile load failed");
             if(!avatarRes.ok)
                 throw new Error("Avatar load failed");
+
+            if(!mounted) return;
+
             const profile = await profileRes.json();
             const avatar = await avatarRes.json();
             setProfile(profile);
             setAvatar(avatar);
+            console.log('setting profile');
+            console.log(profile);
+            setProfileLoaded(true);
+            setLoading(false);
         } catch (error) {
             setError(`An error occured loading profile ${error.message}`);
+            setProfile(null);
+            setAvatar(null);
         } finally {
+            if(!mounted) return;
             setLoading(false);
             setProfileLoaded(true);
         }
@@ -93,7 +110,6 @@ export function ProfileProvider({children}){
 
     return (
         <ProfileContext.Provider value={value}>
-            {/*!loading ? children : <p>Loading Profile</p> */}
             {children}
         </ProfileContext.Provider>
     )

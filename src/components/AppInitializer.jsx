@@ -7,6 +7,7 @@ export default function AppInitializer({children}){
     const profile = useProfile();
 
     const allLoaded = auth.authLoaded && profile.profileLoaded;
+    if(allLoaded)
 
     console.log(`Auth: ${auth.authLoaded} : Profile: ${profile.profileLoaded} : ${allLoaded}`);
 
@@ -19,7 +20,7 @@ export default function AppInitializer({children}){
 
     if(!allLoaded) {
         return (
-            <p>Loading authorization and profile</p>
+            <p data-testid='app-loading-msg'>Loading authorization and profile</p>
         )
     }
 

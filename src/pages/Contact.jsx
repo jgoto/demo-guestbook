@@ -6,10 +6,14 @@ import ContactForm from "../components/contact/ContactFrom";
 import PublicContactForm from "../components/contact/PublicContactForm";
 
 export default function Contact(){
-    const {user, loggedIn} = useAuth();
-    const {profile} = useProfile();
+    const {user, loggedIn, authLoaded} = useAuth();
+    const {profile, profileLoaded} = useProfile();
     const [msg, setMsg] = useState("");
     const [submitted, setSubmitted] = useState(false);
+    const readyToRender = authLoaded && profileLoaded;
+
+    if(!readyToRender)
+        return (<p>Loading...</p>);
 
     async function handleSubmit(payload){
         try {

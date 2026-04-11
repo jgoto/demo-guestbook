@@ -8,6 +8,7 @@ class ContactPage{
         this.subjectInput = page.getByLabel('Subject');
         this.messageInput = page.getByLabel('Message');
                 
+        this.appLoadingMsg = page.getByTestId('app-loading-msg');
         this.simpleContactForm = page.getByTestId('simple-contact-form');
         this.simpleSubject = page.getByLabel('Subject');
         this.simpleMessage = page.getByLabel('Message');
