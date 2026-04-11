@@ -1,4 +1,3 @@
-const { normalizePath } = require('vite');
 const { AppError } = require('../errors/AppError');
 const {selectAllmessages, selectMessagesWithAuthors, createMessage} = require('../repositories/postRepository');
 
