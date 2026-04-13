@@ -40,6 +40,12 @@ export function ProfileProvider({children}){
     },[authLoaded, user?.user_id])
 
     async function loadProfileData(){
+        if(!token)
+        {
+            console.log('Invalid token');
+            return;
+        }
+        console.log(`token: ${token}`)
         try {
             console.log("Getting profile and avatar data from DB");
             const [profileRes, avatarRes] = await Promise.all([
@@ -63,6 +69,7 @@ export function ProfileProvider({children}){
             if(!avatarRes.ok)
                 throw new Error("Avatar load failed");
 
+            
             if(!mounted) return;
 
             const profile = await profileRes.json();

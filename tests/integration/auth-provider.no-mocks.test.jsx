@@ -18,6 +18,9 @@ function AuthProbe(){
 
 describe('AuthProvider no mock integration tests', () => {
     beforeEach(async () => {
+        cleanup();
+        localStorage.clear();
+        sessionStorage.clear();
         await reactSupabase.auth.signOut();
 
         const {error} = await reactSupabase.auth.signInWithPassword({
