@@ -20,6 +20,8 @@ jobs:
       PORT: ${{secrets.PORT}}
       TEST_USER_EMAIL: ${{secrets.TEST_USER_EMAIL}}
       TEST_USER_PW: ${{secrets.TEST_USER_PW}}
+      AUTH_TEST_EMAIL: ${{secrets.AUTH_TEST_EMAIL}}
+      AUTH_TEST_PW: ${{secrets.AUTH_TEST_PW}}
     steps:
     - name: Checkout repository
       uses: actions/checkout@v4

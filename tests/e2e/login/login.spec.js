@@ -7,7 +7,7 @@ test('user filling in email and password and clicking "login" succesfully logs t
     const loginPage = new LoginPage(page)
 
     await loginPage.goto();
-    await loginPage.login(process.env.TEST_USER_EMAIL, process.env.TEST_USER_PW);
+    await loginPage.login(process.env.AUTH_TEST_EMAIL, process.env.AUTH_TEST_PW);
 
     await expect(page).toHaveURL(/\/$/);  // This will do for now, but we need a more robust means of verifying test
 })

@@ -4,7 +4,7 @@ import { useAuth } from './AuthContext';
 const ProfileContext = createContext();
 
 export function ProfileProvider({children}){
-    const {authLoaded, user, userSession, reloadAuth, loggedIn} = useAuth();
+    const {authLoaded, user, userSession, reloadAuth, setLoggedIn} = useAuth();
     const token = userSession?.access_token;
     const [profile, setProfile] = useState(null);
     const [avatar, setAvatar] = useState(null);
@@ -19,7 +19,6 @@ export function ProfileProvider({children}){
 
     useEffect(()=>{
         const load = async () => {
-            console.log('Profile updating');
             if(!authLoaded) return;
             if(!user?.user_id || !token){
                 if(!mounted) return;
@@ -35,19 +34,19 @@ export function ProfileProvider({children}){
                 setMounted(false);
             }
         }       
-        console.log("Attempting to load profile data");
         loadProfileData();
     },[authLoaded, user?.user_id])
 
     async function loadProfileData(){
-        if(!token)
-        {
-            console.log('Invalid token');
+        if(!authLoaded){
             return;
         }
-        console.log(`token: ${token}`)
+        if(!token)
+        {
+            setLoggedIn(false);
+            return;
+        }
         try {
-            console.log("Getting profile and avatar data from DB");
             const [profileRes, avatarRes] = await Promise.all([
                 fetch(`http://localhost:${import.meta.env.VITE_PORT}/api/profile/view/${user.user_id}`, {
                     method: 'GET',
@@ -76,8 +75,6 @@ export function ProfileProvider({children}){
             const avatar = await avatarRes.json();
             setProfile(profile);
             setAvatar(avatar);
-            console.log('setting profile');
-            console.log(profile);
             setProfileLoaded(true);
             setLoading(false);
         } catch (error) {
