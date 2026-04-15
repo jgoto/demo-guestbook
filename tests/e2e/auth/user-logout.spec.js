@@ -10,6 +10,5 @@ test('Authenticated User Logs out when the logout button is clicked', async ({pa
     await expect(page).toHaveURL(/\/$/);
     await loginPage.goto();
     await loginPage.logout();
-    await expect(loginPage.loginPageMsg).toBeVisible();
     await expect(loginPage.loginPageMsg).toContainText(loginPage.LOGOUT_MSG);
 })

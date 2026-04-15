@@ -85,7 +85,7 @@ export function AuthProvider({children}){
         if(pwChange.newPw !== pwChange.confirmNewPw)
             return {success: false, error: new Error("Passwords must match")};
         if (!passwordRegex.test(pwChange.newPw)) {
-            return { success: false, error: "Password must be 8+ chars, include upper/lowercase, number & special character" };
+            return { success: false, error: new Error("Password must be 8+ chars, include upper/lowercase, number & special character")};
         }
         const {error} = await reactSupabase.auth.updateUser({password: pwChange.newPw});
         if(error)

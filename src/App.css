@@ -439,3 +439,8 @@ h1 {
   background-color: #3b55d1;
   transform: translateY(-1px);
 }
+
+.msg-error {
+  color: #FF2C2C;
+  padding-bottom: 0.6rem;
+}

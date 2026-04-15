@@ -2,9 +2,9 @@ import { Navigate, replace } from "react-router-dom";
 import { useAuth } from "../hooks/AuthContext";
 
 export default function ProtectedRoute({children}){
-    const {loggedIn} = useAuth();
+    const {loggedIn, authLoaded} = useAuth();
 
-    if(!loggedIn){
+    if(!loggedIn && authLoaded){
         return <Navigate to='/' replace />
     }
 

@@ -10,7 +10,6 @@ export default function Contact(){
     const {profile, profileLoaded} = useProfile();
     const [msg, setMsg] = useState("");
     const [submitted, setSubmitted] = useState(false);
-    //const readyToRender = authLoaded && profileLoaded;
 
     if(!authLoaded || (loggedIn && !profile))
         return (<p>Loading...</p>);
