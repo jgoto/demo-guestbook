@@ -39,3 +39,4 @@ _pycache_/
 coverage/
 test-report.html
 playwright/.auth
+test-results/

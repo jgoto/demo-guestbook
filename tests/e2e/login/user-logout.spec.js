@@ -6,7 +6,7 @@ test.use({storageState: {cookies: [], origins: []}});
 test('Authenticated User Logs out when the logout button is clicked', async ({page}) => {
     const loginPage = new LoginPage(page);
     await loginPage.goto();    
-    await loginPage.login(process.env.TEST_USER_EMAIL, process.env.TEST_USER_PW);
+    await loginPage.login(process.env.AUTH_TEST_EMAIL, process.env.AUTH_TEST_PW);
     await expect(page).toHaveURL(/\/$/);
     await loginPage.goto();
     await loginPage.logout();

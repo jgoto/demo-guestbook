@@ -11,36 +11,22 @@ export function AuthProvider({children}){
     const [authLoaded, setAuthLoaded] = useState(false);
 
     useEffect(()=>{
-        checkSession().then(() => {
-            console.log("Session Checked")
-            setAuthLoaded(true)
-        }).catch(() => {
-            setAuthLoaded(true)
-        });
 
         let mounted = true;
         const initAuth = async () => {
             try {
-                const {data} = await reactSupabase.auth.getSession();
-                const session = data.session;
-                if(!mounted) return;
-                setUserSession(session);
-                setUser(session?.user ? {
-                    user_id: session.user.id, email: session.user.email
-                } : null);
-                setLoggedIn(!!session);
+                await checkSession();
             } catch (error) {
                 console.error("Session init failed", error);
             } finally {
                 if(mounted){
                     setAuthLoaded(true);
                 }
-            }
-            initAuth();
+            }            
         }
+        initAuth();
 
         const {data: listener} = reactSupabase.auth.onAuthStateChange((_event, session) => {
-            console.log("session data being saved")
             setUserSession(session);
             setUser(session?.user ? {user_id: session.user.id, email: session.user.email} : null);
             setLoggedIn(!!session);            
@@ -81,7 +67,7 @@ export function AuthProvider({children}){
             return;
         localStorage.setItem('token', session.access_token);
         setUserSession(session);
-        setLoggedIn(true);
+        setLoggedIn(!!session);
         setUser({ user_id: session.user.id, email: session.user.email });
         setLoginMsg("");
     }

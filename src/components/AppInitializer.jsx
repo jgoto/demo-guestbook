@@ -18,11 +18,5 @@ export default function AppInitializer({children}){
         ])
     }, [auth.reloadAuth, profile.reloadProfile]);
 
-    if(!allLoaded) {
-        return (
-            <p data-testid='app-loading-msg'>Loading authorization and profile</p>
-        )
-    }
-
     return (<>{children}</>)
 }
