@@ -1,3 +1,5 @@
+[![.github/workflows/ci.yml](https://github.com/jgoto/demo-guestbook/actions/workflows/ci.yml/badge.svg)](https://github.com/jgoto/demo-guestbook/actions/workflows/ci.yml)
+
 # Demo Guestbook
 
 ## Features

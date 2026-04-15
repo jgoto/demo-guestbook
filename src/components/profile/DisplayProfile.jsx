@@ -2,7 +2,7 @@ import Avatar from "./Avatar"
 export default function DisplayProfile({mergedData, onEdit}){
     return (
     <div className={'profile-display-container'}>
-        <h3 className={'profile-display-title'}>{`${mergedData.first_name || ''} ${mergedData.last_name}`}</h3>
+        <h3 className={'app-subtitle'}>{`${mergedData.first_name || ''} ${mergedData.last_name}`}</h3>
         <div className={'profile-display-card'}>
             <div className={'profile-avatar-container'}>
                 <Avatar src={mergedData.signedUrl} size={"md"} alt={mergedData.nickname} />
