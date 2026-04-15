@@ -3,7 +3,7 @@ import { useAuth } from "../hooks/AuthContext";
 import { NavLink } from "react-router-dom";
 
 export default function PasswordChange(){
-    const {requestPwChange} = useAuth();
+    const {requestPwChange, loggedIn} = useAuth();
     const [editPw, setEditPw] = useState(true);
     const [msgSuccess, setMsgSuccess] = useState(null);
     const [pwChange, setPwChange] = useState({
@@ -35,12 +35,15 @@ export default function PasswordChange(){
     return (
         <div>
             <h3 className="app-subtitle">Change Password</h3>
-            {msg&&<h4 className={msgSuccess ? "msg-success" : "msg-error"}>{msg}</h4>}
+            
             <form className="auth-form" onSubmit={handleSubmit}>
+                {msg&&<p data-testid="password-change-msg" className={msgSuccess ? "msg-success" : "msg-error"}>{msg}</p>}
                 <div className="auth-form-group">
                     <label htmlFor="new-pw">New Password: </label>
                     <input type = 'password' 
-                    name="new-pw" 
+                    id="new-pw"
+                    name="newPw" 
+                    data-testid="new-pw"
                     value={pwChange.newPw}
                     onChange={handleChange} 
                     required />
@@ -48,7 +51,9 @@ export default function PasswordChange(){
                 <div className="auth-form-group">
                     <label htmlFor="confirm-new-pw">Confirm New Password: </label>
                     <input type = 'password'
-                    name="confirm-new-pw"
+                    id="confirm-new-pw"
+                    name="confirmNewPw"
+                    data-testid="confirm-new-pw"
                     value={pwChange.confirmNewPw}
                     onChange={handleChange} 
                     required />
@@ -56,7 +61,6 @@ export default function PasswordChange(){
                 <button className="auth-btn" type="submit">Submit</button>
                 <h4><NavLink to='/login' className='change-password-link'>go back</NavLink></h4>
             </form>
-            {(!editPw) && <li><NavLink to='/changepassword'>go back</NavLink></li>}
         </div>
     )
 }

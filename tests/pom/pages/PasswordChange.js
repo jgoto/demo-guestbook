@@ -1,5 +1,0 @@
-class PasswordChange{
-    constructor(page){
-
-    }
-}
