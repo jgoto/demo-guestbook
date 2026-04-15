@@ -34,20 +34,27 @@ export default function PasswordChange(){
 
     return (
         <div>
-            <h3>Change Password</h3>
+            <h3 className="app-subtitle">Change Password</h3>
             {msg&&<h4 className={msgSuccess ? "msg-success" : "msg-error"}>{msg}</h4>}
-            <form onSubmit={handleSubmit}>
-                <label><input type = 'password' 
-                    name="newPw" 
+            <form className="auth-form" onSubmit={handleSubmit}>
+                <div className="auth-form-group">
+                    <label htmlFor="new-pw">New Password: </label>
+                    <input type = 'password' 
+                    name="new-pw" 
                     value={pwChange.newPw}
                     onChange={handleChange} 
-                    required /> New Password </label>
-                <label><input type = 'password'
-                    name="confirmNewPw"
+                    required />
+                </div>
+                <div className="auth-form-group">
+                    <label htmlFor="confirm-new-pw">Confirm New Password: </label>
+                    <input type = 'password'
+                    name="confirm-new-pw"
                     value={pwChange.confirmNewPw}
                     onChange={handleChange} 
-                    required /> Confirm New Password </label>
-                <button type="submit">Submit</button>
+                    required />
+                </div>
+                <button className="auth-btn" type="submit">Submit</button>
+                <h4><NavLink to='/login' className='change-password-link'>go back</NavLink></h4>
             </form>
             {(!editPw) && <li><NavLink to='/changepassword'>go back</NavLink></li>}
         </div>

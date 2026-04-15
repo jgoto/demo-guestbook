@@ -31,7 +31,7 @@ export default function Contact(){
 
     return (
         <div>
-            <h2>Contact Us</h2>
+            <h3 className="app-subtitle">Contact Us</h3>
             {(!loggedIn) ? <PublicContactForm onSubmit={handleSubmit}/> : 
             <ContactForm email={user.email} name={`${profile.first_name} ${profile.last_name}`} onSubmit={handleSubmit}/>}
         </div>

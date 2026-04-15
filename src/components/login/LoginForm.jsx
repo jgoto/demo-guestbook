@@ -20,8 +20,8 @@ export default function LoginForm(){
 
     return (
         <div className='login-container'>
-            <form onSubmit={handleLogin} className='login-form'>
-                <div className = 'login-form-group'>
+            <form onSubmit={handleLogin} className='auth-form'>
+                <div className = 'auth-form-group'>
                     <label htmlFor="email" >Username: </label>
                     <input type = "email"
                         id='login-email'                         
@@ -29,7 +29,7 @@ export default function LoginForm(){
                         value = {email} 
                         onChange={e=>setEmail(e.target.value)} required />
                 </div>
-                <div className="login-form-group">
+                <div className="auth-form-group">
                     <label htmlFor="password">Password: </label>
                     <input type = "password"
                         id="login-password" 
@@ -38,7 +38,7 @@ export default function LoginForm(){
                         onChange={e=>setPassword(e.target.value)} required />
                 </div>
                 <div className='login-actions'>
-                    <button className='login-btn' type="submit">Login</button>
+                    <button className='auth-btn' type="submit">Login</button>
                 </div>
             </form>
         </div>        

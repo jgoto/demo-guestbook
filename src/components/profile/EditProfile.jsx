@@ -20,6 +20,7 @@ export default function EditProfile({onSubmit, mergedData, onCancel}){
 
     return (
         <div>
+            <h3 className="app-subtitle">Edit your profile</h3>
             <form className="edit_profile_form" onSubmit={handleSubmit}>
                 <div className="profile-form-group">
                     <label>First Name: </label>
