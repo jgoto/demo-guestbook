@@ -6,10 +6,13 @@ import ContactForm from "../components/contact/ContactFrom";
 import PublicContactForm from "../components/contact/PublicContactForm";
 
 export default function Contact(){
-    const {user, loggedIn} = useAuth();
-    const {profile} = useProfile();
+    const {user, loggedIn, authLoaded} = useAuth();
+    const {profile, profileLoaded} = useProfile();
     const [msg, setMsg] = useState("");
     const [submitted, setSubmitted] = useState(false);
+
+    if(!authLoaded || (loggedIn && !profile))
+        return (<p>Loading...</p>);
 
     async function handleSubmit(payload){
         try {
@@ -23,11 +26,11 @@ export default function Contact(){
     }
 
     if(submitted)
-        return(<p>{msg}</p>)
+        return(<p data-testid='submit-msg'>{msg}</p>)
 
     return (
         <div>
-            <h2>Contact Us</h2>
+            <h3 className="app-subtitle">Contact Us</h3>
             {(!loggedIn) ? <PublicContactForm onSubmit={handleSubmit}/> : 
             <ContactForm email={user.email} name={`${profile.first_name} ${profile.last_name}`} onSubmit={handleSubmit}/>}
         </div>

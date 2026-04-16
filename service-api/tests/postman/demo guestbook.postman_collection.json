@@ -47,7 +47,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"email\": \"test@example.com\",\n  \"password\": \"REMOVED\"\n}",
+							"raw": "{\n  \"email\": {{TEST_USER_EMAIL}},\n  \"password\": {{TEST_USER_PW}}\n}",
 							"options": {
 								"raw": {
 									"language": "json"

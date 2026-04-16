@@ -1,6 +1,8 @@
 import {test, expect } from '@playwright/test';
 import Navigation from '../pom/components/Navigation';
 
+test.use({storageState: {cookies: [], origins: []}});
+
 test('navbar links navigate correctly for logged-out user', async ({page}) => {
     const nav = new Navigation(page);
 

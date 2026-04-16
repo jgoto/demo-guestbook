@@ -1,25 +1,49 @@
-import { useContext, createContext, useState, useEffect } from 'react';
+import { useContext, createContext, useState, useEffect, useCallback, useMemo } from 'react';
 import { useAuth } from './AuthContext';
 
 const ProfileContext = createContext();
 
 export function ProfileProvider({children}){
-    const {loggedIn, user, userSession} = useAuth();
+    const {authLoaded, user, userSession, reloadAuth, setLoggedIn} = useAuth();
     const token = userSession?.access_token;
     const [profile, setProfile] = useState(null);
     const [avatar, setAvatar] = useState(null);
     const [loading, setLoading] = useState(true);
+    const [mounted, setMounted] = useState(true);
+    const [profileLoaded, setProfileLoaded] = useState(false);
     const [error, setError] = useState(null);
 
+    const reloadProfile = useCallback(() => {
+        loadProfileData();
+}, [loadProfileData]);
+
     useEffect(()=>{
-        if(token && user?.user_id){
-            loadProfileData();
-        }
-    },[token, user?.user_id])
+        const load = async () => {
+            if(!authLoaded) return;
+            if(!user?.user_id || !token){
+                if(!mounted) return;
+                console.log("user not logged in. Setting profile as loaded anyways");
+                setProfile(null);
+                setAvatar(null);
+                setProfileLoaded(true);
+                setLoading(false);
+            }
+
+            load();
+            return ()=>{
+                setMounted(false);
+            }
+        }       
+        loadProfileData();
+    },[authLoaded, user?.user_id])
 
     async function loadProfileData(){
-        if(!token){
-            setLoading(false);
+        if(!authLoaded){
+            return;
+        }
+        if(!token)
+        {
+            setLoggedIn(false);
             return;
         }
         try {
@@ -43,14 +67,24 @@ export function ProfileProvider({children}){
                 throw new Error("Profile load failed");
             if(!avatarRes.ok)
                 throw new Error("Avatar load failed");
+
+            
+            if(!mounted) return;
+
             const profile = await profileRes.json();
             const avatar = await avatarRes.json();
             setProfile(profile);
             setAvatar(avatar);
+            setProfileLoaded(true);
+            setLoading(false);
         } catch (error) {
             setError(`An error occured loading profile ${error.message}`);
+            setProfile(null);
+            setAvatar(null);
         } finally {
+            if(!mounted) return;
             setLoading(false);
+            setProfileLoaded(true);
         }
     }
 
@@ -74,7 +108,9 @@ export function ProfileProvider({children}){
         } 
     }
 
-    const value = {profile, avatar, loading, setLoading, loadProfileData, editProfileForm, error};
+    const value = useMemo(() => ({profile, avatar, loading, setLoading, loadProfileData, editProfileForm, 
+        error, profileLoaded, reloadProfile}), [profile, avatar, loading, setLoading, loadProfileData, editProfileForm, 
+            profileLoaded, error, reloadProfile]);
 
     return (
         <ProfileContext.Provider value={value}>

@@ -1,4 +1,4 @@
-import { useContext, createContext, useState, useEffect } from "react";
+import { useContext, createContext, useState, useEffect, useCallback, useMemo } from "react";
 import  reactSupabase from "../supabaseClient";
 
 const AuthContext = createContext();
@@ -8,18 +8,36 @@ export function AuthProvider({children}){
     const [loggedIn, setLoggedIn] = useState(false);
     const [loginMsg, setLoginMsg] = useState("");
     const [userSession, setUserSession] = useState(null);
+    const [authLoaded, setAuthLoaded] = useState(false);
 
     useEffect(()=>{
-        checkSession();
+
+        let mounted = true;
+        const initAuth = async () => {
+            try {
+                await checkSession();
+            } catch (error) {
+                console.error("Session init failed", error);
+            } finally {
+                if(mounted){
+                    setAuthLoaded(true);
+                }
+            }            
+        }
+        initAuth();
 
         const {data: listener} = reactSupabase.auth.onAuthStateChange((_event, session) => {
             setUserSession(session);
             setUser(session?.user ? {user_id: session.user.id, email: session.user.email} : null);
-            setLoggedIn(!!session);
+            setLoggedIn(!!session);            
         });
 
         return () => listener.subscription.unsubscribe();
     },[])
+
+    const reloadAuth = useCallback(async () => {
+        await checkSession();
+    }, []);
 
     const checkSession = async () =>  {
         const {data} = await reactSupabase.auth.getSession();
@@ -49,7 +67,7 @@ export function AuthProvider({children}){
             return;
         localStorage.setItem('token', session.access_token);
         setUserSession(session);
-        setLoggedIn(true);
+        setLoggedIn(!!session);
         setUser({ user_id: session.user.id, email: session.user.email });
         setLoginMsg("");
     }
@@ -67,7 +85,7 @@ export function AuthProvider({children}){
         if(pwChange.newPw !== pwChange.confirmNewPw)
             return {success: false, error: new Error("Passwords must match")};
         if (!passwordRegex.test(pwChange.newPw)) {
-            return { success: false, error: "Password must be 8+ chars, include upper/lowercase, number & special character" };
+            return { success: false, error: new Error("Password must be 8+ chars, include upper/lowercase, number & special character")};
         }
         const {error} = await reactSupabase.auth.updateUser({password: pwChange.newPw});
         if(error)
@@ -75,8 +93,13 @@ export function AuthProvider({children}){
         return {success: true};
     }
 
+    const value = useMemo(() => ({
+        setUserState, logout, authenticate, requestPwChange, user, loggedIn, loginMsg, 
+        userSession, authLoaded, reloadAuth
+    }), [setUserState, logout, authenticate, requestPwChange, user, loggedIn, loginMsg, userSession, authLoaded,reloadAuth]);
+
     return (
-        <AuthContext.Provider value={{setUserState, logout, authenticate, requestPwChange, user, loggedIn, loginMsg, userSession}}>
+        <AuthContext.Provider value={value}>
             {children}
         </AuthContext.Provider>
     )

@@ -38,3 +38,5 @@ _pycache_/
 # Project Ignored
 coverage/
 test-report.html
+playwright/.auth
+test-results/

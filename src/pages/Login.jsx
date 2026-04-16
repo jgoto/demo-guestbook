@@ -7,12 +7,12 @@ export default function Login(){
     const {loggedIn, loginMsg} = useAuth();
     return (
         <div>
-            <h3 className="login-title">Login</h3>
+            <h3 className="app-subtitle">Login</h3>
             {
                 (!loggedIn) ? <LoginForm /> : <LogoutBtn />                              
             }
             {
-                (loginMsg!=="") && <p>{loginMsg}</p>
+                (loginMsg!=="") && <p data-testid="login-page-msg">{loginMsg}</p>
             }
         </div>
     )

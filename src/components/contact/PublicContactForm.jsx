@@ -27,19 +27,21 @@ export default function PublicContactForm({onSubmit}){
     }
 
     return (
-        <div className={"public-contact-form"}>
+        <div className='public-contact-form' data-testid='public-contact'>
             <form className='contact-form' onSubmit={handleSubmit}>
                 <div className={'contact-form-group'}>
-                    <label>Name</label>
-                    <input type = "text" 
-                        name="name" 
+                    <label htmlFor='name-input'>Name</label>
+                    <input type = 'text'
+                        name='name' 
+                        id='name-input'
                         value = {contact.name} 
                         onChange={handleChange} required />                    
                 </div>
                 <div className={'contact-form-group'}>
-                    <label>Email</label>
+                    <label htmlFor='email-input'>Email</label>
                     <input type = "email" 
                         name="email" 
+                        id='email-input'
                         value = {contact.email} 
                         onChange={handleChange} required />                    
                 </div>
@@ -63,16 +65,18 @@ export default function PublicContactForm({onSubmit}){
                     
                 </div>
                 <div className={'contact-form-group'}>
-                    <label>Subject</label>
+                    <label htmlFor='subject-input'>Subject</label>
                     <input type = "text" 
                         name="subject" 
+                        id="subject-input"
                         value = {contact.subject} 
                         onChange={handleChange} required />
                 </div>
                 <div className={'contact-form-group'}>
-                    <label>Message</label>
+                    <label htmlFor="message-textarea">Message</label>
                     <textarea
                         name="message" 
+                        id="message-textarea"
                         value={contact.message} 
                         onChange={handleChange} required />
                 </div>
