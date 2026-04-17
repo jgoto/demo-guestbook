@@ -9,19 +9,19 @@ export default function DisplayProfile({mergedData, onEdit}){
             </div>
             <div className={'profile-details-container'}>
                 <ul className={'profile-details-list'}>
-                    <li>
+                    <li data-testid="profile-fname">
                         <span className="profile-detail-label">First Name: </span>
                         <span className="profile-detail-value">{mergedData.first_name}</span>
                     </li>
-                    <li>
+                    <li data-testid="profile-lname">
                         <span className="profile-detail-label">Last Name: </span>
                         <span className="profile-detail-value">{mergedData.last_name}</span>
                     </li>
-                    <li>
+                    <li data-testid="profile-nickname">
                         <span className="profile-detail-label">Nickname: </span>
                         <span className="profile-detail-value">{mergedData.nickname}</span>
                     </li>
-                    <li>
+                    <li data-testid="profile-email">
                         <span className="profile-detail-label">Email: </span>
                         <span className="profile-detail-value">{mergedData.email}</span>
                     </li>

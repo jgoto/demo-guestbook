@@ -7,7 +7,7 @@ import EditProfile from "../components/profile/EditProfile";
 export default function Profile(){
     const [isEditing, setIsEditing] = useState(false);
     const {editProfileForm, profile, avatar, loading, setLoading, loadProfileData} = useProfile();
-    const {user} = useAuth();
+    const {user, authLoaded} = useAuth();
 
     const toggleEditing = () => setIsEditing(prev => !prev);
     const handleSubmit = async (newProfile) => {
@@ -22,7 +22,7 @@ export default function Profile(){
         }
     }
 
-    if(loading) return (<p>Loading...</p>);
+    if(loading && !authLoaded) return (<p>Loading...</p>);
     if(!profile) return (<p>No Profile found</p>);
 
     const mergedData = {...profile, ...avatar, email: user.email};
