@@ -8,7 +8,7 @@ export default function DisplayProfile({mergedData, onEdit}){
                 <Avatar src={mergedData.signedUrl} size={"md"} alt={mergedData.nickname} />
             </div>
             <div className={'profile-details-container'}>
-                <ul className={'profile-details-list'}>
+                <ul className={'profile-details-list'} data-testid="profile-details">
                     <li data-testid="profile-fname">
                         <span className="profile-detail-label">First Name: </span>
                         <span className="profile-detail-value">{mergedData.first_name}</span>
