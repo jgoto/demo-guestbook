@@ -13,6 +13,11 @@ class HomePage{
     async goto(){
         await this.page.goto('http://localhost:5173/');
     }
+
+    async createNewPost(postText){
+        await this.newPostInput.fill(postText);
+        await this.sendBtn.click();
+    }
 }
 
 export default HomePage;
