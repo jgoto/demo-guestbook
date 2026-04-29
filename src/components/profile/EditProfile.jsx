@@ -21,25 +21,28 @@ export default function EditProfile({onSubmit, mergedData, onCancel}){
     return (
         <div>
             <h3 className="app-subtitle">Edit your profile</h3>
-            <form className="edit_profile_form" onSubmit={handleSubmit}>
+            <form className="edit_profile_form" onSubmit={handleSubmit} data-testid='edit-profile-form'>
                 <div className="profile-form-group">
-                    <label>First Name: </label>
+                    <label htmlFor="first-name">First Name: </label>
                     <input 
                         type="text" 
+                        id='first-name'
                         name = "first_name" 
                         value = {profileData.first_name} 
                         onChange={handleChange}/>
                 </div>
                 <div className="profile-form-group">
-                    <label>Last Name: </label>
+                    <label htmlFor="last-name">Last Name: </label>
                     <input type="text"
+                        id="last-name"
                         name = "last_name"
                         value = {profileData.last_name}
                         onChange={handleChange} />
                 </div>
                 <div className="profile-form-group">
-                    <label>Nickname: </label>
+                    <label htmlFor="nickname">Nickname: </label>
                     <input type="text"
+                        id="nickname"
                         name = "nickname"
                         value = {profileData.nickname}
                         onChange={handleChange} />
