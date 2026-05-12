@@ -15,7 +15,7 @@ async function viewAvatar(user_id){
         throw new AppError("No user id", 400);
     const cached = avatarCache.get(user_id);
     if(cached && cached.expiry > Date.now()) {
-        console.log(`Recovering signed URL for ${user_id} from cache`)
+        //console.log(`Recovering signed URL for ${user_id} from cache`)
         return cached.signedUrl;
     }
 

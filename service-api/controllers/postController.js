@@ -1,4 +1,5 @@
 const {getFeed, getFeedWithAuthors, createNewMessage} = require('../services/postServices');
+const {AppError} = require('../errors/AppError');
 
 /** routeGetFeed
  * Fetch all messages as a feed
@@ -35,7 +36,7 @@ async function routeGetFeedWithAuthors(req, res){
         const feed = await getFeedWithAuthors();
         res.status(200).json(feed);        
     } catch (error) {
-        console.error(error);
+        console.error(error);      
         res.status(500).json;
     }
 }
@@ -59,6 +60,10 @@ async function routeCreateMessage(req, res){
         res.status(201).json(reply);
     } catch (error) {
         console.error(error);
+        if(error instanceof AppError){
+            res.status(error.status);
+            res.json({"message": error.message})
+        }
         res.status(500).json('Something went wrong')
     }
 }
