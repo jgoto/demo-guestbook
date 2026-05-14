@@ -10,7 +10,9 @@ const req = {
         body: {
             content: { message: 'This is a test' }
         },
-        user_id: 'abc'        
+        user: {
+            id: 'abc'
+        }
     }
     const res = {
         status: jest.fn().mockReturnThis(),

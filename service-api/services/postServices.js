@@ -83,7 +83,6 @@ async function createNewMessage(userClient, post){
     {
         throw new AppError("Bad Request", 400);
     }
-        
 
     const data = await createMessage(userClient ,post);
     return data;

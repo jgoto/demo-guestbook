@@ -44,15 +44,12 @@ export function PostProvider({children}){
     }
 
     const submitNewPost = async (newComment, userId) => {
-        console.log(`Initiating new post for ${userId}: ${newComment}`)
         try {
             if(!newComment.trim()) 
             {
-                console.log("ending early");
                 return;
             }
             if(!token){
-                console.log("Token missing or invalid");
                 return;
             }
 
@@ -63,8 +60,7 @@ export function PostProvider({children}){
                     Authorization: `Bearer ${token}`
                 },
                 body: JSON.stringify({
-                    'content': newComment,
-                    'uuid': userId
+                    'content': newComment
                 })
             });
             if(response.status===201){
