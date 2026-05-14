@@ -60,16 +60,30 @@ function normalizePosts(data){
 }
 
 /**
- * requests a new message to be created
- * 
- * @param {Object} post - Message payload to insert
- * @returns {Promise<Object|undefined>}
- * 
+ * Creates a new message in the database using the provided client.
+ *
+ * @param {Object} userClient - Authenticated database client (e.g. Supabase client from middleware)
+ * @param {Object} post - Message payload
+ * @param {string} post.user_id - ID of the user creating the message
+ * @param {string} post.content - Message content to insert
+ *
+ * @returns {Promise<Object>} The inserted message record
+ *
+ * @throws {AppError} If validation fails or insert operation fails
+ *
  * @description
- * Returns insert response on success.
+ * This function assumes `userClient` is already authenticated and valid.
+ * It does not handle authentication or session creation.
  */
 async function createNewMessage(userClient, post){
     /** Enforce posting limits here when functionality is available */
+    if(!userClient)
+        throw new AppError("Missing Authentication", 401);
+    if(typeof post.content!== 'string' || typeof post.user_id !== 'string')
+    {
+        throw new AppError("Bad Request", 400);
+    }
+
     const data = await createMessage(userClient ,post);
     return data;
 }
