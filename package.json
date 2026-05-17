@@ -11,7 +11,8 @@
     "test:e2e": "playwright test",
     "test": "vitest",
     "test:run": "vitest run",
-    "test:integration": "concurrently -k --success first \" node service-api/server.js\" \"vitest run tests/integration\"",
+    "test:integration": "concurrently -k --success first \"node service-api/server.js\" \"vitest run tests/integration --reporter=html\"",
+    "test:integration:ci": "concurrently -k --success first \"node service-api/server.js\" \"vitest run tests/integration --reporter=junit --outputFile=vitest-results.xml\"",
     "test:watch": "vitest"
   },
   "dependencies": {
@@ -32,6 +33,7 @@
     "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3",
     "@vitejs/plugin-react": "^6.0.1",
+    "@vitest/ui": "^4.1.6",
     "eslint": "^9.34.0",
     "eslint-plugin-react": "^7.37.5",
     "eslint-plugin-react-hooks": "^7.0.1",

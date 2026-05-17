@@ -46,11 +46,28 @@ jobs:
     - name: Run backend tests (jest)
       run: npm test
       working-directory: ./service-api
+    - uses: actions/upload-artifact@v4
+      if: ${{ !cancelled() }}
+      with:
+        name: jest coverage report
+        retention-days: 30
     
     - name: Run frontend Integration tests (Vitest)
-      run: npm run test:integration
+      run: npm run test:integration:ci
       working-directory: ./
+    - uses: actions/upload-artifact@v4
+      if: ${{ !cancelled() }}
+      with:
+        name: vitest report
+        path: vitest-results.xml
     
     - name: Run frontend E2E tests (playwright)
       run: npm run test:e2e
       working-directory: ./
+    - uses: actions/upload-artifact@v4
+      with:
+        name: playwright-report
+        path: |
+          playwright-report/
+          test-results/
+        retention-days: 30

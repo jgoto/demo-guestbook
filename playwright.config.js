@@ -34,4 +34,5 @@ export default defineConfig({
             dependencies: ['setup'],
         },
     ],
+    globalTeardown: './tests/global-teardown.ts'
 });

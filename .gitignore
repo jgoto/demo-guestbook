@@ -37,6 +37,9 @@ _pycache_/
 
 # Project Ignored
 coverage/
+user.json
+vitest-report/
+vitest-results.xml
 test-report.html
 playwright/.auth
 test-results/
