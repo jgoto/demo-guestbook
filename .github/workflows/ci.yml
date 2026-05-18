@@ -42,7 +42,7 @@ jobs:
     - name: Install playwright browsers
       run: npx playwright install --with-deps
       working-directory: ./
-
+        
     - name: Run backend tests (jest)
       run: npm test
       working-directory: ./service-api
@@ -51,8 +51,13 @@ jobs:
       with:
         name: jest coverage report
         retention-days: 30
-    
-    - name: Run frontend Integration tests (Vitest)
+
+    - name: Start Backend Server
+      run: node service-api/server.js
+    - name: Wait on Backend Server
+      run: npx wait-on http://localhost:5000
+    - run: pwd && ls -R
+    - name: Run frontend Integration tests (Vitest) 
       run: npm run test:integration:ci
       working-directory: ./
     - uses: actions/upload-artifact@v4
