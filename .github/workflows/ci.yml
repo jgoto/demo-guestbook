@@ -54,9 +54,9 @@ jobs:
         retention-days: 30
 
     - name: Start Backend Server
-      run: node service-api/server.js
+      run: node service-api/server.js &
     - name: Wait on Backend Server
-      run: npx wait-on http://localhost:5000
+      run: npx wait-on http://127.0.0.1:5000 --timeout 30000 --interval 500
     - run: pwd && ls -R
     - name: Run frontend Integration tests (Vitest) 
       run: npm run test:integration:ci
