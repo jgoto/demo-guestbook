@@ -50,6 +50,7 @@ jobs:
       if: ${{ !cancelled() }}
       with:
         name: jest coverage report
+        path: ./service-api/coverage
         retention-days: 30
 
     - name: Start Backend Server
